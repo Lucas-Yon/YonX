@@ -1,0 +1,15 @@
+{
+  "name": "blog",
+  "scripts": {
+    "dev": "bun run --hot src/index.tsx",
+    "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx"
+  },
+  "dependencies": {
+    "@unocss/core": "^0.63.4",
+    "hono": "^4.6.4",
+    "unocss": "^0.63.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
