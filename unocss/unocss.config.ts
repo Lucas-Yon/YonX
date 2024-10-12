@@ -2,12 +2,12 @@ import { defineConfig, presetWind, presetWebFonts } from "unocss";
 
 export default defineConfig({
   presets: [
-    presetWind({ preflight: false }),
+    presetWind({ preflight: true }),
     presetWebFonts({
       provider: "google", // default provider
       fonts: {
         // these will extend the default theme
-        sans: "DM Sans",
+        sans: "DM Sans:400",
         mono: "Space Mono",
         // custom ones
       },
@@ -50,11 +50,12 @@ export default defineConfig({
     {
       // Add your custom preflight styles
       getCSS: () => `
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'DM Sans', sans-serif;
+       h1, h2, h3, h4, h5, h6 { 
+        font-family: DM Sans, normal;
+        font-weight: 400;
       }
       body {
-        font-family: 'Space Mono', monospace;
+        font-family: Space Mono, normal;
       }
     `,
     },
