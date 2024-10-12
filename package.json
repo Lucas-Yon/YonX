@@ -6,9 +6,11 @@
     "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.4.1",
     "@unocss/core": "^0.63.4",
     "hono": "^4.6.4",
-    "unocss": "^0.63.4"
+    "unocss": "^0.63.4",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/alpinejs": "^3.13.10",

@@ -1,7 +1,7 @@
-import { Calculate } from "../../test";
+import { client } from "@/client/utils/rpc";
 interface TextStore {
   value: string;
-  updateLocalStorage(message: string): void;
+  updateLocalStorage(message: unknown): void;
 }
 
 class TextStoreImpl implements TextStore {
@@ -9,14 +9,15 @@ class TextStoreImpl implements TextStore {
 
   constructor() {
     this.value = localStorage.getItem("value") || "kappa";
-    Calculate(0, 0);
-    console.log("12");
+    console.log("123");
   }
 
-  updateLocalStorage(message: unknown) {
+  async updateLocalStorage(message: unknown) {
     if (typeof message !== "string") {
       return;
     }
+    const res = await client.api.users.get.$post({ json: { name: message } });
+    console.log(res);
     this.value = message;
     console.log(message);
     localStorage.setItem("value", this.value);
@@ -26,5 +27,3 @@ class TextStoreImpl implements TextStore {
 document.addEventListener("alpine:init", () => {
   Alpine.store("text", new TextStoreImpl());
 });
-
-const yolo: string = "yo";
