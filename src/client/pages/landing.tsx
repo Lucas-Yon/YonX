@@ -1,9 +1,7 @@
-import { Hono } from "hono";
 import Header from "@/client/header";
+import app from "@/binding";
 
-const app = new Hono();
-
-app.get("/", async (c) => {
+app.get("/ii", async (c) => {
   return await c.html(
     <Header>
       <div>oo</div>

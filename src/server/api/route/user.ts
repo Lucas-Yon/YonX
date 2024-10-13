@@ -1,10 +1,9 @@
-import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
+import app from "@/binding";
 
-const app = new Hono();
 const userRoutes = app
-  .post("/get", async (c) => {
+  .get("/get", async (c) => {
     return c.json({
       user: "blabla",
     });

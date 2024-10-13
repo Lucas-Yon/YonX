@@ -1,10 +1,10 @@
 
-import { Hono } from "hono";
-import landing from "./landing";
+  import app from "@/binding";
+  import landing from "./landing";
+    
+
+
+  app.route("/", landing);
+
+  export default app;
   
-
-const app = new Hono().basePath("/");
-
-app.route("/", landing);
-
-export default app;
