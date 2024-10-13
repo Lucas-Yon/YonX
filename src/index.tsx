@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import Header from "./client/header";
 import api from "@/server/api/root";
+import pages from "@/client/pages/root";
 
 const app = new Hono();
 app.get(
@@ -13,6 +14,9 @@ app.get(
 );
 // api -> api/route/action
 app.route("/", api);
+
+// pages -> client/pages/*
+app.route("/", pages);
 
 app.get("/", async (c) => {
   return await c.html(

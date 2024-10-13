@@ -1,12 +1,17 @@
 import { watch } from "fs";
+import { readdir } from "node:fs/promises";
 
-const watcher = watch("../statics/dev", async (event, filename) => {
+const pagesDir = "../src/client/pages";
+const staticsDev = "../statics/dev/";
+const staticsDist = "../statics/dist/";
+
+const watcher = watch(staticsDev, async (event, filename) => {
   try {
     console.log(`Detected ${event} in ${filename}`);
     if (filename && filename.endsWith(".ts")) {
       await Bun.build({
-        entrypoints: [`../statics/dev/${filename}`],
-        outdir: `../statics/dist/`,
+        entrypoints: [`${staticsDev}${filename}`],
+        outdir: `${staticsDist}`,
         minify: false,
         conditions: ["browser"],
       });
@@ -16,9 +21,62 @@ const watcher = watch("../statics/dev", async (event, filename) => {
   }
 });
 
+const watchPages = watch(
+  pagesDir,
+  { recursive: true },
+  async (event, filename) => {
+    if (!filename || !filename.endsWith(".tsx")) {
+      console.log("Not a .tsx file", filename);
+      return;
+    }
+    const files = await readdir(pagesDir, {
+      recursive: true,
+      withFileTypes: true,
+    });
+    const pages = files
+      .filter((file) => file.name.endsWith(".tsx"))
+      .map((file) => {
+        const path = file.parentPath.replace(pagesDir, "");
+        const name = file.name.replace(".tsx", "");
+        const importName = path.replace(/\//g, "") + name;
+        return {
+          name,
+          path,
+          importName,
+        };
+      });
+    console.log(pages);
+
+    const rootContent = `
+  import { Hono } from "hono";
+  ${pages
+    .map((page) => {
+      return `import ${page.importName} from ".${page.path}/${page.name}";`;
+    })
+    .join("\n")}
+    
+
+  const app = new Hono().basePath("/");
+
+  ${pages
+    .map((page) => {
+      return `app.route("${page.path !== "" ? page.path : "/"}", ${
+        page.importName
+      });`;
+    })
+    .join("\n")}
+
+  export default app;
+  `;
+    await Bun.write(`${pagesDir}/root.ts`, rootContent);
+    console.log(`Detected ${event} in ${filename}`);
+  }
+);
+
 process.on("SIGINT", () => {
   console.log("Closing watcher...");
   watcher.close();
+  watchPages.close();
   process.exit(0);
 });
 
