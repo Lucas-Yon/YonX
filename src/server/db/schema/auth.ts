@@ -40,3 +40,6 @@ export const sessions = createTable("session", {
     .references(() => users.id),
   expires_at: text("timestamp").notNull(),
 });
+
+export type Session = typeof sessions.$inferSelect;
+export type User = typeof users.$inferSelect;

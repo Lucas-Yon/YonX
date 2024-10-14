@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { env } from "./env";
 import { db } from "./server/db";
 import { createMiddleware } from "hono/factory";
+import type { Context } from "hono";
 
 type Env = {
   Variables: {
@@ -20,5 +21,7 @@ const mw = createMiddleware<Env>(async (c, next) => {
 });
 
 app.use(mw);
+
+export type AppContext = Context<Env>;
 
 export default app;

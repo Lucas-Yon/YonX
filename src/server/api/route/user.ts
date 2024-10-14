@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import app from "@/binding";
 

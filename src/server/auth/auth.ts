@@ -4,16 +4,16 @@ import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from "@oslojs/encoding";
-import { sessions, users } from "@/server/db/schema/auth";
-import { env } from "@/env";
+import {
+  sessions,
+  users,
+  type Session,
+  type User,
+} from "@/server/db/schema/auth";
 import { eq } from "drizzle-orm";
 import { sha256 } from "@oslojs/crypto/sha2";
-
-type Session = typeof sessions.$inferSelect;
-type User = typeof users.$inferSelect;
-type UserIdType = typeof users.id;
-
-// import { getSessionToken } from "/lib/session";
+import type { AppContext } from "@/binding";
+import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 
 const SESSION_REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 15;
 const SESSION_MAX_DURATION_MS = SESSION_REFRESH_INTERVAL_MS * 2;
@@ -50,9 +50,11 @@ export async function createSession(
   return session;
 }
 
-export async function validateRequest(): Promise<SessionValidationResult> {
+export async function validateRequest(
+  c: AppContext
+): Promise<SessionValidationResult> {
   // setup getting the session token
-  const sessionToken = "";
+  const sessionToken = getSessionToken(c);
   if (!sessionToken) {
     return { session: null, user: null };
   }
@@ -115,3 +117,46 @@ export async function invalidateUserSessions(
 export type SessionValidationResult =
   | { session: Session; user: User }
   | { session: null; user: null };
+
+const SESSION_COOKIE_NAME = "session";
+
+export function setSessionTokenCookie(
+  token: string,
+  expiresAt: string | Date,
+  c: AppContext
+): void {
+  setCookie(c, SESSION_COOKIE_NAME, token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    expires: typeof expiresAt === "string" ? new Date(expiresAt) : expiresAt,
+    path: "/",
+  });
+}
+
+export function deleteSessionTokenCookie(c: AppContext): void {
+  deleteCookie(c, SESSION_COOKIE_NAME);
+}
+
+export function getSessionToken(c: AppContext): string | undefined {
+  return getCookie(c, SESSION_COOKIE_NAME);
+}
+
+// export const getCurrentUser = cache(async () => {
+//   const { user } = await validateRequest();
+//   return user ?? undefined;
+// });
+
+// export const assertAuthenticated = async () => {
+//   const user = await getCurrentUser();
+//   if (!user) {
+//     throw new AuthenticationError();
+//   }
+//   return user;
+// };
+
+export async function setSession(user_id: Session["user_id"], c: AppContext) {
+  const token = generateSessionToken();
+  const session = await createSession(token, user_id);
+  setSessionTokenCookie(token, session.expires_at, c);
+}
