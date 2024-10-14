@@ -5,6 +5,8 @@
   "scripts": {
     "devStart": "bun run --hot src/index.tsx",
     "dev": "bun --filter '*' devStart",
+    "db:migrate": "bun src/server/db/migrate.ts",
+    "db:generate": "bunx drizzle-kit generate",
     "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx"
   },
   "dependencies": {
