@@ -1,5 +1,6 @@
 {
-  "name": "blog",
+  "name": "yonx",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "devStart": "bun run --hot src/index.tsx",

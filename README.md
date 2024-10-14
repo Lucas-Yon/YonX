@@ -16,3 +16,11 @@ Front and back are written in typescript.
 - `bun install` to install dependencies
 - `bun dev` to start the dev server
 - `bun compile` to compile into a single executable
+
+## Todo list
+
+- [ ] Add caching for the static files
+- [ ] Add a Postgresql example
+- [ ] Add a basic auth system using Lucia
+- [ ] Optimize statics file by using a CDN
+- [ ] Add some ui components to the examples
