@@ -2,13 +2,13 @@ import FrontLayout from "@/client/layout/front_layout";
 import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/components/ui/text_input";
 
-const app = new HonoApp().app.get("/login", async (c) => {
+const app = new HonoApp().app.get("/register", async (c) => {
   return await c.html(
     <FrontLayout>
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-foreground">
-            Sign in to your account
+            Create an account
           </h2>
         </div>
 
@@ -19,7 +19,7 @@ const app = new HonoApp().app.get("/login", async (c) => {
             email: new URLSearchParams(location.search).get('email') ?? ''
             }"
             className="space-y-6"
-            action="/api/auth/login"
+            action="/api/auth/register"
             method="get"
           >
             <div>
@@ -60,10 +60,10 @@ const app = new HonoApp().app.get("/login", async (c) => {
           <p className="mt-10 text-center text-sm text-muted-foreground">
             Not a member?
             <a
-              href="/register"
+              href="/login"
               className="font-semibold ml-2 leading-6 text-primary hover:text-accent"
             >
-              Register
+              Login
             </a>
           </p>
         </div>

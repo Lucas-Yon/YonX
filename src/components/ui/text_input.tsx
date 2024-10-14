@@ -1,6 +1,6 @@
 export function PasswordInput() {
   return (
-    <div className="flex w-full max-w-xs flex-col gap-1 text-foreground">
+    <div className="flex w-full  flex-col gap-1 text-foreground">
       <label
         htmlFor="passwordInput"
         className="w-fit pl-0.5 text-foreground text-sm"
@@ -11,7 +11,7 @@ export function PasswordInput() {
         <input
           {...{ ":type": "showPassword ? 'text' : 'password'" }}
           id="passwordInput"
-          className="w-full rounded-md bg-input px-2 py-2 text-sm text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-75"
+          className="w-full rounded-md bg-background px-2 py-2 text-sm text-foreground focus-visible:outline focus-visible:outline-2  focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-75"
           name="password"
           autoComplete="current-password"
           placeholder="Enter your password"
@@ -19,7 +19,7 @@ export function PasswordInput() {
         <button
           type="button"
           {...{ "@click": "showPassword = !showPassword" }}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 border-none bg-input text-muted-foreground"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 border-none bg-background text-muted-foreground"
           aria-label="Show password"
         >
           <svg
@@ -60,6 +60,30 @@ export function PasswordInput() {
             />
           </svg>
         </button>
+      </div>
+    </div>
+  );
+}
+
+export function EmailInput() {
+  return (
+    <div className="flex w-full flex-col gap-1 text-foreground">
+      <label
+        htmlFor="emailInput"
+        className="w-fit pl-0.5 text-foreground text-sm"
+      >
+        Email
+      </label>
+      <div className="relative">
+        <input
+          type="email"
+          id="emailInput"
+          x-model="email"
+          className="w-full rounded-md bg-background px-2 py-2 text-sm text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-75"
+          name="email"
+          autoComplete="email"
+          placeholder="Enter your email"
+        />
       </div>
     </div>
   );

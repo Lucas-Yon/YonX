@@ -4,7 +4,7 @@ import Header from "@/client/header";
 const FrontLayout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
   return (
     <Header>
-      <html class="bg-background h-full font-montserrat">
+      <html class="dark bg-background h-full font-montserrat">
         <body class={"h-full"}>{props.children}</body>
       </html>
     </Header>

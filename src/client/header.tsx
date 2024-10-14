@@ -15,7 +15,7 @@ const Header = async (props: PropsWithChildren) => {
         <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} />
         <Style>{css`
           [x-cloak] {
-            display: none;
+            display: none !important;
           }
         `}</Style>
         <script

@@ -48,13 +48,13 @@ const watchPages = watch(
     console.log(pages);
 
     const rootContent = `
-  import binding from "@/binding";
+  import { HonoApp } from "@/HonoApp";
   ${pages
     .map((page) => {
       return `import ${page.importName} from ".${page.path}/${page.name}";`;
     })
     .join("\n")}
-  const app = binding();
+  const app = new HonoApp().app;
 
 
 

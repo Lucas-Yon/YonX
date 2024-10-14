@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0a8e9e71-2cc3-432f-b963-f2ff8b1d6d71",
+  "id": "20112124-cb99-4592-b795-041b5bb9375d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "yonx_credential": {
@@ -147,8 +147,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -164,12 +164,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "yonx_session_userId_yonx_user_id_fk": {
-          "name": "yonx_session_userId_yonx_user_id_fk",
+        "yonx_session_user_id_yonx_user_id_fk": {
+          "name": "yonx_session_user_id_yonx_user_id_fk",
           "tableFrom": "yonx_session",
           "tableTo": "yonx_user",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"

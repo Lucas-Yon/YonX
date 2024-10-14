@@ -1,9 +1,9 @@
-import binding from "@/binding";
+import { HonoApp } from "@/HonoApp";
 import login from "./login";
+import register from "./register";
 import landing from "./landing";
-import flavitomuscu from "./flavito/muscu";
-const app = binding();
+const app = new HonoApp().app;
 app.route("/", login);
+app.route("/", register);
 app.route("/", landing);
-app.route("/flavito", flavitomuscu);
 export default app;

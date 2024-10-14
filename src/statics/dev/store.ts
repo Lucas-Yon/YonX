@@ -9,7 +9,6 @@ class TextStoreImpl implements TextStore {
 
   constructor() {
     this.value = localStorage.getItem("value") || "kappa";
-    console.log("123");
   }
 
   async updateLocalStorage(message: unknown) {
@@ -17,10 +16,7 @@ class TextStoreImpl implements TextStore {
       return;
     }
     // const res = await client.api.users.get.$get({ json: { name: message } });
-    // console.log(res);
-    const miaou: string = "12";
     this.value = message;
-    console.log(message, miaou);
     localStorage.setItem("value", this.value);
   }
 }

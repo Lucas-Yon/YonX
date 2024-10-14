@@ -1,16 +1,32 @@
-import binding from "./binding";
+import { HonoApp } from "./HonoApp";
 import { serveStatic } from "hono/bun";
 import api from "@/server/api/root";
 import pages from "@/client/pages/root";
-import { Hono } from "hono";
+import { logger } from "hono/logger";
 
-const app = binding();
+const Hono = new HonoApp();
 
+Hono.addAuthMiddleware("/api");
+Hono.addGlobalMiddleware();
+Hono.redirectIfAuthentificated(["/login", "/register"]);
+
+const app = Hono.app;
 // api -> api/route/action
 app.route("/", api);
 
 // pages -> client/pages/*
 app.route("/", pages);
+
+Hono.addAuthMiddleware("/welcome");
+
+app.get("/welcome", async (c) => {
+  return await c.html(
+    <div>
+      <h1>{`welcome ${c.var.session?.user?.email}`}</h1>
+      <a href="/api/auth/logout">Logout</a>
+    </div>
+  );
+});
 
 // When writing client side file in /statics/dev with a .ts extension
 // bun will automatically compile and write the corresponding .js file in /statics/dist

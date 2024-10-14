@@ -12,7 +12,7 @@ import {
 } from "@/server/db/schema/auth";
 import { eq } from "drizzle-orm";
 import { sha256 } from "@oslojs/crypto/sha2";
-import type { AppContext } from "@/binding";
+import type { AppContext } from "@/HonoApp";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 
 const SESSION_REFRESH_INTERVAL_MS = 1000 * 60 * 60 * 24 * 15;
@@ -54,6 +54,9 @@ export async function validateRequest(
   c: AppContext
 ): Promise<SessionValidationResult> {
   // setup getting the session token
+  if (c.var.session) {
+    return c.var.session;
+  }
   const sessionToken = getSessionToken(c);
   if (!sessionToken) {
     return { session: null, user: null };

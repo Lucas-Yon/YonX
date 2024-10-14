@@ -1,15 +1,16 @@
-import { z } from "zod";
-import binding from "@/binding";
+import { HonoApp } from "@/HonoApp";
 
-const app = binding();
+const Hono = new HonoApp({ path: "/get", auth: true });
 
-const userRoutes = app
+Hono.addAuthMiddleware("/update");
+
+const userRoutes = Hono.app
   .get("/get", async (c) => {
     return c.json({
-      user: "coucou ",
+      user: c.env.TEST,
     });
   })
-  .post("update", async (c) => {
+  .get("/update", async (c) => {
     return c.json({
       user: "blabla",
     });
