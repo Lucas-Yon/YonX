@@ -2,8 +2,8 @@ import { watch } from "fs";
 import { readdir } from "node:fs/promises";
 
 const pagesDir = "../src/client/pages";
-const staticsDev = "../statics/dev/";
-const staticsDist = "../statics/dist/";
+const staticsDev = "../src/statics/dev/";
+const staticsDist = "../src/statics/dist/";
 
 const watcher = watch(staticsDev, async (event, filename) => {
   try {
@@ -48,13 +48,14 @@ const watchPages = watch(
     console.log(pages);
 
     const rootContent = `
-  import app from "@/binding";
+  import binding from "@/binding";
   ${pages
     .map((page) => {
       return `import ${page.importName} from ".${page.path}/${page.name}";`;
     })
     .join("\n")}
-    
+  const app = binding();
+
 
 
   ${pages
@@ -67,7 +68,7 @@ const watchPages = watch(
 
   export default app;
   `;
-    await Bun.write(`${pagesDir}/root.ts`, rootContent);
+    await Bun.write(`${pagesDir}/root.ts`, rootContent.replace(/^\s+/gm, ""));
     console.log(`Detected ${event} in ${filename}`);
   }
 );

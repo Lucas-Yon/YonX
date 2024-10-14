@@ -1,7 +1,10 @@
-import app from "./binding";
+import binding from "./binding";
 import { serveStatic } from "hono/bun";
 import api from "@/server/api/root";
 import pages from "@/client/pages/root";
+import { Hono } from "hono";
+
+const app = binding();
 
 // api -> api/route/action
 app.route("/", api);
@@ -16,7 +19,8 @@ app.get(
   "/static/*",
   serveStatic({
     root: "./",
-    rewriteRequestPath: (path) => path.replace(/^\/static/, "/statics/dist"),
+    rewriteRequestPath: (path) =>
+      path.replace(/^\/static/, "./src/statics/dist"),
   })
 );
 

@@ -16,10 +16,11 @@ class TextStoreImpl implements TextStore {
     if (typeof message !== "string") {
       return;
     }
-    const res = await client.api.users.get.$post({ json: { name: message } });
-    console.log(res);
+    // const res = await client.api.users.get.$get({ json: { name: message } });
+    // console.log(res);
+    const miaou: string = "12";
     this.value = message;
-    console.log(message);
+    console.log(message, miaou);
     localStorage.setItem("value", this.value);
   }
 }

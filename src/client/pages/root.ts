@@ -1,12 +1,9 @@
-
-  import app from "@/binding";
-  import login from "./login";
+import binding from "@/binding";
+import login from "./login";
 import landing from "./landing";
-    
-
-
-  app.route("/", login);
+import flavitomuscu from "./flavito/muscu";
+const app = binding();
+app.route("/", login);
 app.route("/", landing);
-
-  export default app;
-  
+app.route("/flavito", flavitomuscu);
+export default app;

@@ -1,5 +1,7 @@
 import Header from "@/client/header";
-import app from "@/binding";
+import binding from "@/binding";
+
+const app = binding();
 
 app.get("/ii", async (c) => {
   return await c.html(

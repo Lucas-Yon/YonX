@@ -1,9 +1,11 @@
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import app from "@/binding";
+import binding from "@/binding";
 
-const authRoutes = app
-  .post(
+const app = binding();
+
+app
+  .get(
     "/login",
     zValidator("form", z.object({ email: z.number(), password: z.string() })),
     async (c) => {
@@ -18,4 +20,4 @@ const authRoutes = app
     });
   });
 
-export default authRoutes;
+export default app;

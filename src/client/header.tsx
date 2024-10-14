@@ -1,14 +1,18 @@
-import { type FC, type PropsWithChildren } from "hono/jsx";
-import { cssGenerator } from "../../unocss/generate-css";
+import { type PropsWithChildren } from "hono/jsx";
 import { css, Style } from "hono/css";
+import { createGenerator, GenerateOptions } from "@unocss/core";
+import unoConfig from "../../unocss.config";
 
 const Header = async (props: PropsWithChildren) => {
-  const generatedCss = await cssGenerator.generate(`${props.children}`);
+  const generatedCss = await createGenerator(unoConfig).generate(
+    `${props.children}`
+  );
 
   return (
-    <html class={"h-full"}>
+    <html>
       <head>
-        <style>{generatedCss.css}</style>
+        <style href="/static/reset.css" />
+        <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} />
         <Style>{css`
           [x-cloak] {
             display: none;
@@ -30,10 +34,9 @@ const Header = async (props: PropsWithChildren) => {
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Yonx</title>
       </head>
 
-      <body class={"h-full bg-blue-200"}>{props.children}</body>
+      <body>{props.children}</body>
     </html>
   );
 };

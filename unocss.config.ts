@@ -1,14 +1,20 @@
 import { defineConfig, presetWind, presetWebFonts } from "unocss";
 
 export default defineConfig({
+  layers: {
+    components: -1,
+    default: 0,
+    utilities: 2,
+    base: -2,
+  },
   presets: [
     presetWind({ preflight: true, dark: "class" }),
     presetWebFonts({
       provider: "google", // default provider
       fonts: {
         // these will extend the default theme
-        // sans: "DM Sans:400",
-        // mono: "Space Mono",
+        sans: "DM Sans:400",
+        mono: "Space Mono",
         montserrat: "Montserrat",
         // custom ones
       },
@@ -16,6 +22,7 @@ export default defineConfig({
   ],
   theme: {
     // Define your custom CSS variables
+
     colors: {
       border: "hsl(var(--border))",
       input: "hsl(var(--input))",
@@ -67,8 +74,9 @@ export default defineConfig({
   preflights: [
     {
       // Add your custom preflight styles
+      layer: "base",
+
       getCSS: () => `
-      /* Add your custom preflight styles here */
       @layer base {
       :root {
         --background: 229 57% 100%;
@@ -115,14 +123,15 @@ export default defineConfig({
         --ring: 229 100% 62%;
       }
     }
-    @layer base {
+      @layer base {
       * {
         @apply border-border;
       }
       body {
-        @apply bg-background text-foreground;
+        --at-apply: "bg-background text-foreground";
       }
-    }
+     }
+   
   
     `,
     },
