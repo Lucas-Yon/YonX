@@ -1,4 +1,4 @@
-import { createEnv } from "./env.core";
+import { createEnv } from "./yonx/env.core";
 import { z } from "zod";
 
 export const env = createEnv({

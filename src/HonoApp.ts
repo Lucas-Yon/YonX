@@ -4,6 +4,9 @@ import { db } from "./server/db";
 import { createMiddleware } from "hono/factory";
 import type { Context } from "hono";
 import { logger } from "hono/logger";
+import { csrf } from "hono/csrf";
+import { cors } from "hono/cors";
+
 import { every, except } from "hono/combine";
 import { validateRequest, SessionValidationResult } from "./server/auth/auth";
 
@@ -37,6 +40,8 @@ export class HonoApp {
     }
     // Logger middleware
     this.app.use(logger());
+    this.app.use(csrf());
+    this.app.use(cors());
 
     // Database and environment setup middleware (db,redis,env,etc...)
     this.app.use(

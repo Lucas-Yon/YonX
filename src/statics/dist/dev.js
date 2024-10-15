@@ -1,4 +1,4 @@
-// ../node_modules/hono/dist/utils/cookie.js
+// node_modules/hono/dist/utils/cookie.js
 var _serialize = (name, value, opt = {}) => {
   let cookie = `${name}=${value}`;
   if (name.startsWith("__Secure-") && !opt.secure) {
@@ -55,7 +55,7 @@ var serialize = (name, value, opt) => {
   return _serialize(name, value, opt);
 };
 
-// ../node_modules/hono/dist/client/utils.js
+// node_modules/hono/dist/client/utils.js
 function isObject(item) {
   return typeof item === "object" && item !== null && !Array.isArray(item);
 }
@@ -102,7 +102,7 @@ var removeIndexString = (urlSting) => {
   return urlSting.replace(/\/index$/, "");
 };
 
-// ../node_modules/hono/dist/client/client.js
+// node_modules/hono/dist/client/client.js
 var createProxy = (callback, path) => {
   const proxy = new Proxy(() => {
   }, {
@@ -261,8 +261,8 @@ var hc = (baseUrl, options) => createProxy(function proxyCallback(opts) {
   return req;
 }, []);
 
-// ../src/statics/dev/dev.ts
-var client = hc("http://localhost:3000");
+// src/statics/dev/dev.ts
+var client = hc("http://localhost:7777");
 var DevStore = {
   tree: [],
   updateTree(data) {
@@ -271,8 +271,15 @@ var DevStore = {
   init() {
     const ws = client.ws.$ws(0);
     ws.onmessage = (event) => {
-      this.updateTree(JSON.parse(event.data).routes);
+      const data = JSON.parse(event.data);
+      if ("routes" in data) {
+        this.updateTree(JSON.parse(event.data).routes);
+      }
+      if ("reload" in data) {
+        location.reload();
+      }
     };
+    console.log(ws);
     ws.addEventListener("open", () => {
       console.log("WebSocket connection opened.");
     });

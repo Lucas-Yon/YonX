@@ -1,20 +1,21 @@
 import { watch } from "fs";
 import { readdir } from "node:fs/promises";
 
-const pagesDir = "../src/client/pages";
-const staticsDev = "../src/statics/dev/";
-const staticsDist = "../src/statics/dist/";
+const pagesDir = "src/client/pages";
+const staticsDev = "src/statics/dev";
+const staticsDist = "src/statics/dist";
 
 const watcher = watch(staticsDev, async (event, filename) => {
+  console.log(event, filename);
   try {
-    console.log(`Detected ${event} in ${filename}`);
     if (filename && filename.endsWith(".ts")) {
-      await Bun.build({
-        entrypoints: [`${staticsDev}${filename}`],
-        outdir: `${staticsDist}`,
+      const res = await Bun.build({
+        entrypoints: [`./${staticsDev}/${filename}`],
+        outdir: `./${staticsDist}`,
         minify: false,
         conditions: ["browser"],
       });
+      console.log(res);
     }
   } catch (error) {
     console.log(error);
@@ -26,7 +27,6 @@ const watchPages = watch(
   { recursive: true },
   async (event, filename) => {
     if (!filename || !filename.endsWith(".tsx")) {
-      console.log("Not a .tsx file", filename);
       return;
     }
     const files = await readdir(pagesDir, {
@@ -45,7 +45,6 @@ const watchPages = watch(
           importName,
         };
       });
-    console.log(pages);
 
     const rootContent = `
   import { HonoApp } from "@/HonoApp";
@@ -69,7 +68,6 @@ const watchPages = watch(
   export default app;
   `;
     await Bun.write(`${pagesDir}/root.ts`, rootContent.replace(/^\s+/gm, ""));
-    console.log(`Detected ${event} in ${filename}`);
   }
 );
 

@@ -12,6 +12,7 @@ class TextStoreImpl implements TextStore {
   }
 
   async updateLocalStorage(message: unknown) {
+    console.log(message, "message");
     if (typeof message !== "string") {
       return;
     }

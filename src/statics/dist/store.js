@@ -1,10 +1,11 @@
-// ../src/statics/dev/store.ts
+// src/statics/dev/store.ts
 class TextStoreImpl {
   value;
   constructor() {
     this.value = localStorage.getItem("value") || "kappa";
   }
   async updateLocalStorage(message) {
+    console.log(message, "message");
     if (typeof message !== "string") {
       return;
     }

@@ -49,29 +49,8 @@ app.get(
 //   return await c.html(dev(app));
 // });
 
-const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>();
-
-const wsDev = app.get(
-  "/ws",
-  upgradeWebSocket((c) => {
-    const routes = inspectRoutes(app);
-
-    return {
-      onOpen(evt, ws) {
-        console.log(ws.readyState);
-        ws.send(JSON.stringify({ routes }));
-      },
-      onMessage: (event, ws) => {
-        // console.log(ws, event);
-      },
-    };
-  })
-);
-
-Bun.serve({
+export default {
   port: 3000,
   fetch: app.fetch,
-  websocket: websocket,
-});
-
-export type AppDev = typeof wsDev;
+  app: app,
+};

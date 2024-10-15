@@ -1,7 +1,7 @@
 import { hc } from "hono/client";
-import type { AppDev } from "@/index";
+import type { AppDev } from "@/yonx/socket";
 
-const client = hc<AppDev>("http://localhost:3000");
+const client = hc<AppDev>("http://localhost:7777");
 
 interface Store {
   tree: {
@@ -24,9 +24,17 @@ const DevStore: Store = {
   init() {
     const ws = client.ws.$ws(0);
     ws.onmessage = (event) => {
-      this.updateTree(JSON.parse(event.data).routes);
-    };
+      const data = JSON.parse(event.data);
+      if ("routes" in data) {
+        this.updateTree(JSON.parse(event.data).routes);
+      }
 
+      if ("reload" in data) {
+        location.reload();
+      }
+    };
+    //test125
+    console.log(ws);
     ws.addEventListener("open", () => {
       console.log("WebSocket connection opened.");
     });
