@@ -2,7 +2,9 @@ import { HonoApp } from "./HonoApp";
 import { serveStatic } from "hono/bun";
 import api from "@/server/api/root";
 import pages from "@/client/pages/root";
-import { logger } from "hono/logger";
+import { createBunWebSocket } from "hono/bun";
+import type { ServerWebSocket } from "bun";
+import { inspectRoutes } from "hono/dev";
 
 const Hono = new HonoApp();
 
@@ -30,11 +32,6 @@ app.get("/welcome", async (c) => {
   );
 });
 
-app.get("/devhelper", async (c) => {
-  console.log(c.body);
-  return c.json({});
-});
-
 // When writing client side file in /statics/dev with a .ts extension
 // bun will automatically compile and write the corresponding .js file in /statics/dist
 // so that we can serve it statically with the following route
@@ -42,9 +39,39 @@ app.get(
   "/static/*",
   serveStatic({
     root: "./",
+
     rewriteRequestPath: (path) =>
       path.replace(/^\/static/, "./src/statics/dist"),
   })
 );
 
-export default app;
+// app.get("/dev", async (c) => {
+//   return await c.html(dev(app));
+// });
+
+const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>();
+
+const wsDev = app.get(
+  "/ws",
+  upgradeWebSocket((c) => {
+    const routes = inspectRoutes(app);
+
+    return {
+      onOpen(evt, ws) {
+        console.log(ws.readyState);
+        ws.send(JSON.stringify({ routes }));
+      },
+      onMessage: (event, ws) => {
+        // console.log(ws, event);
+      },
+    };
+  })
+);
+
+Bun.serve({
+  port: 3000,
+  fetch: app.fetch,
+  websocket: websocket,
+});
+
+export type AppDev = typeof wsDev;

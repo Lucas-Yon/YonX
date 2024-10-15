@@ -9,7 +9,7 @@ Hono.addMiddleware("/get", {
 const userRoutes = Hono.app
   .get("/get", async (c) => {
     return c.json({
-      user: c.env.TEST,
+      user: c.var.env.TEST,
     });
   })
   .get("/update", async (c) => {

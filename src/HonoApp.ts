@@ -5,7 +5,6 @@ import { createMiddleware } from "hono/factory";
 import type { Context } from "hono";
 import { logger } from "hono/logger";
 import { every, except } from "hono/combine";
-
 import { validateRequest, SessionValidationResult } from "./server/auth/auth";
 
 export type Env = {
@@ -13,23 +12,17 @@ export type Env = {
     db: typeof db;
     session?: SessionValidationResult;
     getSession: typeof validateRequest;
+    env: typeof env;
   };
-  Bindings: typeof env;
+  Bindings: undefined;
 };
-
-export type BindingOptions = {
-  path?: string;
-  auth?: boolean;
-};
-
-export type AppContext = Context<Env>;
 
 export class HonoApp {
   public app: Hono<Env>;
   private globalEnabled: boolean = false;
 
   constructor() {
-    this.app = new Hono<Env>();
+    this.app = new Hono<Env>({});
   }
   /**
    * Enables the global middleware of the app. This adds a logger and some environment
@@ -49,9 +42,10 @@ export class HonoApp {
     this.app.use(
       createMiddleware<Env>(async (c, next) => {
         // await Bun.sleep(1000); // Simulate some async setup
-        c.env = env;
+        // c.env = env;
         c.set("db", db);
         c.set("getSession", validateRequest);
+        c.set("env", env);
         await next();
       })
     );
@@ -161,3 +155,5 @@ type MiddlewareNames<T> = {
       : never
     : never;
 }[keyof T];
+
+export type AppContext = Context<Env>;
