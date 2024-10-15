@@ -6,18 +6,20 @@ import { logger } from "hono/logger";
 
 const Hono = new HonoApp();
 
-Hono.addAuthMiddleware("/api");
 Hono.addGlobalMiddleware();
 Hono.redirectIfAuthentificated(["/login", "/register"]);
 
 const app = Hono.app;
+
 // api -> api/route/action
 app.route("/", api);
 
 // pages -> client/pages/*
 app.route("/", pages);
 
-Hono.addAuthMiddleware("/welcome");
+Hono.addMiddleware("/welcome", {
+  authAdapters: ["some-test-string"],
+});
 
 app.get("/welcome", async (c) => {
   return await c.html(
@@ -26,6 +28,11 @@ app.get("/welcome", async (c) => {
       <a href="/api/auth/logout">Logout</a>
     </div>
   );
+});
+
+app.get("/devhelper", async (c) => {
+  console.log(c.body);
+  return c.json({});
 });
 
 // When writing client side file in /statics/dev with a .ts extension

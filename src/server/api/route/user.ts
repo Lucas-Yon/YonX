@@ -1,8 +1,10 @@
 import { HonoApp } from "@/HonoApp";
 
-const Hono = new HonoApp({ path: "/get", auth: true });
+const Hono = new HonoApp();
 
-Hono.addAuthMiddleware("/update");
+Hono.addMiddleware("/get", {
+  authAdapters: ["some-test-string"],
+});
 
 const userRoutes = Hono.app
   .get("/get", async (c) => {

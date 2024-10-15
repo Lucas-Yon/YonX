@@ -12,7 +12,7 @@ import {
   invalidateSession,
 } from "@/server/auth/auth";
 const Hono = new HonoApp();
-Hono.addAuthMiddleware("/logout");
+Hono.addMiddleware("/logout", { authAdapters: ["some-test-string"] });
 const app = Hono.app;
 
 // TODO - Add error handling for auth

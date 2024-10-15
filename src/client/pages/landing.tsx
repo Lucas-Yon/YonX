@@ -3,7 +3,7 @@ import { HonoApp } from "@/HonoApp";
 
 const app = new HonoApp().app;
 
-app.get("/ii", async (c) => {
+app.get("/landing", async (c) => {
   return await c.html(
     <Header>
       <div>oo</div>
