@@ -6,9 +6,10 @@ import type { Context } from "hono";
 import { logger } from "hono/logger";
 import { csrf } from "hono/csrf";
 import { cors } from "hono/cors";
-
+import { contextStorage } from "hono/context-storage";
 import { every, except } from "hono/combine";
 import { validateRequest, SessionValidationResult } from "./server/auth/auth";
+import { requestId } from "hono/request-id";
 
 export type Env = {
   Variables: {
@@ -42,6 +43,10 @@ export class HonoApp {
     this.app.use(logger());
     this.app.use(csrf());
     this.app.use(cors());
+
+    // Context middleware to generate scripts ect...
+    this.app.use(contextStorage());
+    this.app.use("*", requestId());
 
     // Database and environment setup middleware (db,redis,env,etc...)
     this.app.use(

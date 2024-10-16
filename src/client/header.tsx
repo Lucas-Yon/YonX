@@ -1,7 +1,8 @@
 import { type PropsWithChildren } from "hono/jsx";
 import { css, Style } from "hono/css";
-import { createGenerator, GenerateOptions } from "@unocss/core";
+import { createGenerator } from "@unocss/core";
 import unoConfig from "../../unocss.config";
+import { Scripts } from "@/yonx/script";
 
 const Header = async (props: PropsWithChildren) => {
   const generatedCss = await createGenerator(unoConfig).generate(
@@ -18,6 +19,8 @@ const Header = async (props: PropsWithChildren) => {
             display: none !important;
           }
         `}</Style>
+        <Scripts />
+
         <script
           defer
           src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"
