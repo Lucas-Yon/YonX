@@ -1,7 +1,7 @@
 import FrontLayout from "@/client/layout/front_layout";
 import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/components/ui/text_input";
-import { Script } from "@/yonx/script";
+import { Script } from "@/scripts";
 
 const app = new HonoApp().app.get("/login", async (c) => {
   return await c.html(

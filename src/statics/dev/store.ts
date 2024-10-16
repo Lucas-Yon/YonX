@@ -16,7 +16,7 @@ class TextStoreImpl implements TextStore {
     if (typeof message !== "string") {
       return;
     }
-    // const res = await client.api.users.get.$get({ json: { name: message } });
+    const res = await client.api.users.get.$get({ json: { name: message } });
     this.value = message;
     localStorage.setItem("value", this.value);
   }

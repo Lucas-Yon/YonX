@@ -2,17 +2,20 @@ import { FC } from "hono/jsx";
 import { html, raw } from "hono/html";
 import { getContext } from "hono/context-storage";
 import { Env } from "@/HonoApp";
+import { ExistingScripts } from "@/scripts";
 
 interface ScriptProps {
   children?: string;
   id?: string;
   src?: string;
+  dist?: keyof typeof ExistingScripts;
 }
 
 interface ScriptData {
   content?: string;
   id?: string;
   src?: string;
+  dist?: keyof typeof ExistingScripts;
 }
 
 interface ScriptManager {
@@ -21,41 +24,33 @@ interface ScriptManager {
 }
 
 export const createScriptManager = (): ScriptManager => {
-  const map = new Map<string, Set<string>>();
-
   const contextManager = (
     action: "add" | "clear" | "get",
     data?: ScriptData
   ) => {
-    const c = getContext<Env>();
-    const currentRequestId = c.get("requestId");
-
-    //@ts-ignore hack to avoid double render of scripts
-    if (c.get("scriptCheck")) return;
+    const c = getContext<
+      Env & { Variables: { scripts?: Set<string> | "cleared" } }
+    >();
 
     if (action === "get") {
-      return map.get(currentRequestId);
+      return c.get("scripts");
     }
     if (action === "add" && data) {
-      const dataAsString = JSON.stringify(data);
-      const set = map.get(currentRequestId);
-      map.set(
-        currentRequestId,
-        set ? set.add(dataAsString) : new Set([dataAsString])
-      );
+      const currentSet = c.get("scripts") || new Set<string>();
+      if (currentSet === "cleared") return;
+      c.set("scripts", currentSet.add(JSON.stringify(data)));
     }
     if (action === "clear") {
-      map.delete(currentRequestId);
-      //@ts-ignore
-      c.set("scriptCheck", true);
+      c.set("scripts", "cleared");
     }
   };
 
-  const Script: FC<ScriptProps> = ({ children, id, src }) => {
+  const Script: FC<ScriptProps> = ({ children, id, src, dist }) => {
     const scriptData: ScriptData = {};
     if (children) scriptData.content = children;
     if (id) scriptData.id = id;
     if (src) scriptData.src = src;
+    if (dist) scriptData.dist = dist;
 
     contextManager("add", scriptData);
     return null;
@@ -63,13 +58,20 @@ export const createScriptManager = (): ScriptManager => {
 
   const Scripts: FC = () => {
     const currentSet = contextManager("get");
-    if (!currentSet) return null;
+    if (!currentSet || currentSet === "cleared") return null;
+
     const result = html`${Array.from(currentSet).map((scriptString) => {
       const script = JSON.parse(scriptString) as ScriptData;
       if (script.src) {
         return html`<script
           id="${script.id || ""}"
           src="${script.src}"
+        ></script>`;
+      } else if (script.dist) {
+        return html`<script
+          id="${script.id || ""}"
+          src="${ExistingScripts[script.dist]}"
+          type="module"
         ></script>`;
       } else {
         return html`<script id="${script.id || ""}">
@@ -83,7 +85,3 @@ export const createScriptManager = (): ScriptManager => {
 
   return { Script, Scripts };
 };
-
-const scriptManager = createScriptManager();
-
-export const { Script, Scripts } = scriptManager;

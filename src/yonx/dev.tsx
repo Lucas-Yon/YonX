@@ -1,13 +1,13 @@
 import { inspectRoutes } from "hono/dev";
 import { HonoApp } from "@/HonoApp";
 import { html } from "hono/html";
+import { Script } from "@/scripts";
 
 function ToolsRoutes() {
   return (
     <>
-      {Bun.env.DEV && (
+      {/* {Bun.env.DEV && (
         <head class={"yo"}>
-          <script src="/static/dev.js"></script>
           {html`
             <script>
               // No need to use dangerouslySetInnerHTML.
@@ -15,8 +15,8 @@ function ToolsRoutes() {
             </script>
           `}
         </head>
-      )}
-
+      )} */}
+      <Script dist="dev" />
       <div
         x-data="{
         bannerVisible: false,

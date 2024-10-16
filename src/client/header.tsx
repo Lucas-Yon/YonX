@@ -2,7 +2,7 @@ import { type PropsWithChildren } from "hono/jsx";
 import { css, Style } from "hono/css";
 import { createGenerator } from "@unocss/core";
 import unoConfig from "../../unocss.config";
-import { Scripts } from "@/yonx/script";
+import { Script, Scripts } from "@/scripts";
 
 const Header = async (props: PropsWithChildren) => {
   const generatedCss = await createGenerator(unoConfig).generate(
@@ -33,7 +33,7 @@ const Header = async (props: PropsWithChildren) => {
           defer
           src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
         ></script>
-        <script src="/static/store.js"></script>
+        {/* <script src="/static/store.js" type={"module"}></script> */}
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
