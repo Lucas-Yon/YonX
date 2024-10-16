@@ -9,7 +9,7 @@ export function PasswordInput() {
       </label>
       <div x-data="{ showPassword: false }" className="relative">
         <input
-          {...{ ":type": "showPassword ? 'text' : 'password'" }}
+          x-bind:type="showPassword ? 'text' : 'password'"
           id="passwordInput"
           className="w-full rounded-md bg-background px-2 py-2 text-sm text-foreground focus-visible:outline focus-visible:outline-2  focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-75"
           name="password"
@@ -18,7 +18,7 @@ export function PasswordInput() {
         />
         <button
           type="button"
-          {...{ "@click": "showPassword = !showPassword" }}
+          x-on:click="showPassword = !showPassword"
           className="absolute right-2.5 top-1/2 -translate-y-1/2 border-none bg-background text-muted-foreground"
           aria-label="Show password"
         >

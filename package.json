@@ -2,6 +2,7 @@
   "name": "yonx",
   "version": "0.0.2",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "bunx concurrently 'bun devStart' 'bun devCodeGen' 'bun devSocket'",
     "devStart": "bun run --hot src/index.tsx",
@@ -11,11 +12,7 @@
     "db:generate": "bunx drizzle-kit generate",
     "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
-    "customjsx": "workspaces:*",
     "@hono/zod-validator": "^0.4.1",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
