@@ -22,6 +22,7 @@ const DevStore: Store = {
   },
 
   init() {
+    if (!location.origin.includes("localhost")) return;
     const ws = client.ws.$ws(0);
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);

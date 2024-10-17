@@ -6,16 +6,6 @@ import { Script } from "@/scripts";
 function ToolsRoutes() {
   return (
     <>
-      {/* {Bun.env.DEV && (
-        <head class={"yo"}>
-          {html`
-            <script>
-              // No need to use dangerouslySetInnerHTML.
-              // If you write it here, it will not be escaped.
-            </script>
-          `}
-        </head>
-      )} */}
       <Script dist="dev" />
       <div
         x-data="{
@@ -122,23 +112,6 @@ function ToolsRoutes() {
                       ></td>
                     </tr>
                   </template>
-                  <tr>
-                    <td className="px-4 py-2 border border-border text-foreground">
-                      /api/feature
-                    </td>
-                    <td className="px-4 py-2 border border-border text-foreground">
-                      GET
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 border border-border text-foreground">
-                      /api/users
-                    </td>
-                    <td className="px-4 py-2 border border-border text-foreground">
-                      POST
-                    </td>
-                  </tr>
-                  {/* Add more rows as needed */}
                 </tbody>
               </table>
             </div>
@@ -146,27 +119,6 @@ function ToolsRoutes() {
         </div>
       </div>
     </>
-
-    // <div class="overflow-x-auto">
-    //   <table class="min-w-full bg-white border border-gray-300">
-    //     <thead>
-    //       <tr class="bg-gray-100">
-    //         <th class="py-2 px-4 border-b">Path</th>
-    //         <th class="py-2 px-4 border-b">Method</th>
-    //         <th class="py-2 px-4 border-b">Name</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {routes.map((item, index) => (
-    //         <tr key={index} class="hover:bg-gray-50">
-    //           <td class="py-2 px-4 border-b">{item.path}</td>
-    //           <td class="py-2 px-4 border-b">{item.method}</td>
-    //           <td class="py-2 px-4 border-b">{item.name}</td>
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </table>
-    // </div>
   );
 }
 
