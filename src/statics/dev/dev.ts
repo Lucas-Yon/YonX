@@ -33,11 +33,16 @@ const DevStore: Store = {
         location.reload();
       }
     };
-    //test125
+    //test125888
     console.log(ws);
     ws.addEventListener("open", () => {
       console.log("WebSocket connection opened.");
     });
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed.");
+      location.reload();
+    };
   },
 };
 

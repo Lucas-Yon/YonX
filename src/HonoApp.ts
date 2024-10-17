@@ -28,7 +28,7 @@ type CacheEntry = {
   expiry: number;
 };
 
-const cache = new Map<string, CacheEntry>();
+const simpleCacheStore = new Map<string, CacheEntry>();
 let globalEnabled = false;
 
 export class HonoApp {
@@ -97,7 +97,7 @@ export class HonoApp {
   public simpleCacheAdapters(ttl: number = 60000) {
     return createMiddleware<Env>(async (c, next) => {
       const key = c.req.url;
-      const cachedResponse = cache.get(key);
+      const cachedResponse = simpleCacheStore.get(key);
 
       if (cachedResponse && cachedResponse.expiry > Date.now()) {
         c.header("X-Cache", "HIT");
@@ -113,7 +113,7 @@ export class HonoApp {
       const responseBody = await c.res.clone().text();
       const responseHeaders = new Headers(c.res.headers);
 
-      cache.set(key, {
+      simpleCacheStore.set(key, {
         body: responseBody,
         headers: responseHeaders,
         status: c.res.status,

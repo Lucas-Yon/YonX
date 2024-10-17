@@ -24,6 +24,10 @@ var DevStore = {
     ws.addEventListener("open", () => {
       console.log("WebSocket connection opened.");
     });
+    ws.onclose = () => {
+      console.log("WebSocket connection closed.");
+      location.reload();
+    };
   }
 };
 document.addEventListener("alpine:init", () => {

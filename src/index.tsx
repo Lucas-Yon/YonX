@@ -2,14 +2,11 @@ import { HonoApp } from "./HonoApp";
 import { serveStatic } from "hono/bun";
 import api from "@/server/api/root";
 import pages from "@/client/pages/root";
-import { createBunWebSocket } from "hono/bun";
-import type { ServerWebSocket } from "bun";
-import { inspectRoutes } from "hono/dev";
 
 const Hono = new HonoApp();
 
 Hono.addGlobalMiddleware();
-Hono.redirectIfAuthentificated(["/login", "/register"]);
+// Hono.redirectIfAuthentificated(["/login", "/register"]);
 
 const app = Hono.app;
 
@@ -39,6 +36,18 @@ app.get("/welcome", async (c) => {
 // bun will automatically compile and write the corresponding .js file in /statics/dist
 // so that we can serve it statically with the following route
 app.get(
+  "/static/js/*",
+  serveStatic({
+    root: "./",
+    onFound: (_path, c) => {
+      c.header("Cache-Control", `public, immutable, max-age=31536000`);
+    },
+    rewriteRequestPath: (path) =>
+      path.replace(/^\/static/, "./src/statics/dist"),
+  })
+);
+
+app.get(
   "/static/*",
   serveStatic({
     root: "./",
@@ -47,10 +56,6 @@ app.get(
       path.replace(/^\/static/, "./src/statics/dist"),
   })
 );
-
-// app.get("/dev", async (c) => {
-//   return await c.html(dev(app));
-// });
 
 export default {
   port: 3000,
