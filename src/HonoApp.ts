@@ -98,7 +98,6 @@ export class HonoApp {
     return createMiddleware<Env>(async (c, next) => {
       const key = c.req.url;
       const cachedResponse = cache.get(key);
-      console.log(key);
 
       if (cachedResponse && cachedResponse.expiry > Date.now()) {
         c.header("X-Cache", "HIT");
@@ -163,8 +162,6 @@ export class HonoApp {
     }[],
     exclude?: string | string[]
   ) {
-    console.log(configs, path);
-
     let middlewares: any = [];
     for (const [key, value] of Object.entries(configs[0])) {
       const methodName = key as MiddlewareNames<HonoApp>;

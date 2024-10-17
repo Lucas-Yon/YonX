@@ -12,8 +12,7 @@ const Hono = new HonoApp();
 // ]);
 
 const app = Hono.app.get("/login", async (c) => {
-  await Bun.sleep(1000);
-  // console.log("here oo ");
+  // await Bun.sleep(1000);
   return await c.html(
     <FrontLayout>
       <Script>

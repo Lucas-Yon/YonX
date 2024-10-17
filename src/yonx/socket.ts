@@ -13,6 +13,11 @@ const debounce = (fn: Function, ms = 1000) => {
   };
 };
 
+const debouncedReload = debounce((ws: ServerWebSocket) => {
+  console.log("yolol");
+  ws.send(JSON.stringify({ reload: true }));
+}, 500);
+
 const app = new HonoApp().app;
 
 let watcher: any;
@@ -33,12 +38,13 @@ const wsDev = app.get(
             !filename.includes("yonx") &&
             !filename.endsWith(".js")
           ) {
-            ws.send(JSON.stringify({ reload: true }));
-            const debouncedReload = debounce(() => {
-              ws.send(JSON.stringify({ reload: true }));
-            }, 1500);
+            // ws.send(JSON.stringify({ reload: true }));
+            // const debouncedReload = debounce(() => {
+            //   console.log("yolol");
+            //   ws.send(JSON.stringify({ reload: true }));
+            // }, 1500);
 
-            debouncedReload();
+            debouncedReload(ws);
           }
         });
       },

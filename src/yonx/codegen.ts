@@ -9,7 +9,6 @@ const watcher = watch(
   staticsDev,
   { recursive: true },
   async (event, filename) => {
-    console.log(event, filename);
     try {
       const files = await readdir(staticsDev, {
         recursive: true,
@@ -59,7 +58,6 @@ const watcher = watch(
             const containsKeyword = hashes.some((hash) =>
               file.name.includes(hash)
             );
-            console.log(file.parentPath);
             if (!containsKeyword) {
               unlink(`./${file.parentPath}/${file.name}`);
             }
