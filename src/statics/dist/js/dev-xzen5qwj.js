@@ -2,15 +2,38 @@ import {
   hc
 } from "./chunk-341nqc1c.js";
 
+// yonx.config.ts
+var yonxConfig = {
+  codegen: {
+    jsmodule: {
+      enabled: true,
+      devPath: "src/client/module",
+      distPath: "src/statics/dist"
+    },
+    pages: {
+      enabled: true,
+      pagesPath: "src/client/pages"
+    },
+    devsocket: {
+      enabled: false,
+      port: 7777
+    }
+  }
+};
+var socket = yonxConfig.codegen.devsocket;
+var yonx_config_default = yonxConfig;
+
 // src/client/module/dev.ts
-var client = hc("http://localhost:7777");
+var socketDevPort = yonx_config_default.codegen.devsocket.port;
+var socketDevEnabled = yonx_config_default.codegen.devsocket.enabled;
+var client = hc(`http://localhost:${socketDevPort}`);
 var DevStore = {
   tree: [],
   updateTree(data) {
     this.tree = data;
   },
   init() {
-    if (!location.origin.includes("localhost"))
+    if (!location.origin.includes("localhost") || !socketDevEnabled)
       return;
     const ws = client.ws.$ws(0);
     ws.onmessage = (event) => {

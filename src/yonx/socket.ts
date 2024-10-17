@@ -1,11 +1,16 @@
 import { createBunWebSocket } from "hono/bun";
 import type { ServerWebSocket } from "bun";
 import { inspectRoutes } from "hono/dev";
-import { watch } from "fs";
 import { HonoApp } from "@/HonoApp";
 import MainApp from "@/index";
 import { debounce } from "./utils";
 import chokidar from "chokidar";
+import yonxConfig from "yonx.config";
+
+if (!yonxConfig.codegen.devsocket.enabled) {
+  console.log("DevSocket disabled");
+  process.exit();
+}
 
 const app = new HonoApp().app;
 
@@ -45,28 +50,10 @@ const wsDev = app.get(
   })
 );
 
-// process.on("SIGINT", () => {
-//   // close watcher if it is defined
-//   if (watcher) {
-//     console.log("Closing watcher...");
-//     watcher.close();
-//   } else {
-//     console.log("No watcher to close.");
-//   }
-//   process.exit(0);
-// });
-
 export default {
-  port: 7777,
+  port: yonxConfig.codegen.devsocket.port,
   fetch: app.fetch,
   websocket,
 };
-
-// Bun.serve({
-//   port: 7777,
-//   fetch: app.fetch,
-//   // @ts-ignore
-//   websocket,
-// });
 
 export type AppDev = typeof wsDev;

@@ -1,7 +1,11 @@
 import { hc } from "hono/client";
 import type { AppDev } from "@/yonx/socket";
+import yonxConfig from "yonx.config";
 
-const client = hc<AppDev>("http://localhost:7777");
+const socketDevPort = yonxConfig.codegen.devsocket.port;
+const socketDevEnabled = yonxConfig.codegen.devsocket.enabled;
+
+const client = hc<AppDev>(`http://localhost:${socketDevPort}`);
 
 interface Store {
   tree: {
@@ -22,7 +26,7 @@ const DevStore: Store = {
   },
 
   init() {
-    if (!location.origin.includes("localhost")) return;
+    if (!location.origin.includes("localhost") || !socketDevEnabled) return;
     const ws = client.ws.$ws(0);
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
