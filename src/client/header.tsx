@@ -1,11 +1,15 @@
 import { type PropsWithChildren } from "hono/jsx";
 import { css, Style } from "hono/css";
 import { createGenerator } from "@unocss/core";
-import unoConfig from "../../unocss.config";
+import { customTheme } from "./css/unocss";
+import { getContext } from "hono/context-storage";
+import { Env } from "@/HonoApp";
 import { Script, Scripts } from "@/scripts";
 
 const Header = async (props: PropsWithChildren) => {
-  const generatedCss = await createGenerator(unoConfig).generate(
+  const c = getContext<Env>();
+  const cssconfig = await customTheme(c.var.theme ?? "basic");
+  const generatedCss = await createGenerator(cssconfig).generate(
     `${props.children}`
   );
 

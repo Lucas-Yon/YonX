@@ -12,7 +12,7 @@ const Hono = new HonoApp();
 // ]);
 
 const app = Hono.app.get("/login", async (c) => {
-  // await Bun.sleep(1000);
+  c.set("theme", c.req.query("theme"));
   return await c.html(
     <FrontLayout>
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">

@@ -18,6 +18,7 @@ export type Env = {
     session?: SessionValidationResult;
     getSession: typeof validateRequest;
     env: typeof env;
+    theme?: string;
   };
   Bindings: undefined;
 };
