@@ -1,8 +1,9 @@
 import chokidar from "chokidar";
 import { readdir } from "fs/promises";
 import { debounce } from "../utils";
+import yonxConfig from "yonx.config";
 
-const pagesDir = "src/client/pages";
+const pagesDir = yonxConfig.codegen.pages.pagesPath;
 
 interface PageInfo {
   name: string;
@@ -59,33 +60,26 @@ export default app;
 
 const debouncedProcessPages = debounce(processPages, 300);
 
-const watcherPages = chokidar.watch(`${pagesDir}`, {
-  ignored: /(^|[\/\\])\../, // ignore dotfiles
-  persistent: true,
-  ignoreInitial: true,
-});
-
-watcherPages
-  .on("add", (path) => {
-    console.log(`File ${path} has been added`);
-    debouncedProcessPages(path);
-  })
-  .on("change", (path) => {
-    console.log(`File ${path} has been changed`);
-    debouncedProcessPages(path);
-  })
-  .on("unlink", (path) => {
-    console.log(`File ${path} has been removed`);
-    debouncedProcessPages(path);
+if (yonxConfig.codegen.pages.enabled) {
+  const watcherPages = chokidar.watch(`${pagesDir}`, {
+    ignored: /(^|[\/\\])\../, // ignore dotfiles
+    persistent: true,
+    ignoreInitial: true,
   });
 
-// Initial processing
-// processPages();
-
-// Graceful shutdown
-// process.on("SIGINT", () => {
-//   watcherPages.close().then(() => {
-//     console.log("Page watcher closed");
-//     process.exit(0);
-//   });
-// });
+  watcherPages
+    .on("add", (path) => {
+      console.log(`File ${path} has been added`);
+      debouncedProcessPages(path);
+    })
+    .on("change", (path) => {
+      console.log(`File ${path} has been changed`);
+      debouncedProcessPages(path);
+    })
+    .on("unlink", (path) => {
+      console.log(`File ${path} has been removed`);
+      debouncedProcessPages(path);
+    });
+} else {
+  console.log("Page codegen disabled");
+}

@@ -2,7 +2,7 @@ import {
   hc
 } from "./chunk-341nqc1c.js";
 
-// src/statics/dev/dev.ts
+// src/client/module/dev.ts
 var client = hc("http://localhost:7777");
 var DevStore = {
   tree: [],

@@ -1,4 +1,4 @@
-import { client } from "@/client/utils/rpc";
+import { client } from "@/client/module/utils/rpc";
 interface TextStore {
   value: string;
   updateLocalStorage(message: unknown): void;

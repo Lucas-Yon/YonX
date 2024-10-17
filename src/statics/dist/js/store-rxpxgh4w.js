@@ -1,11 +1,9 @@
 import {
-  hc
-} from "./chunk-341nqc1c.js";
+  client
+} from "./utils/rpc-k0qpaqhb.js";
+import"./chunk-341nqc1c.js";
 
-// src/client/utils/rpc.ts
-var client = hc("http://localhost:3000/");
-
-// src/statics/dev/store.ts
+// src/client/module/store.ts
 class TextStoreImpl {
   value;
   constructor() {

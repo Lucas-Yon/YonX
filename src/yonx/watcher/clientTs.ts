@@ -1,9 +1,10 @@
 import { readdir, unlink } from "node:fs/promises";
 import chokidar from "chokidar";
 import { debounce } from "../utils";
+import yonxConfig from "yonx.config";
 
-const staticsDev = "src/statics/dev";
-const staticsDist = "src/statics/dist";
+const staticsDev = yonxConfig.codegen.jsmodule.devPath;
+const staticsDist = yonxConfig.codegen.jsmodule.distPath;
 
 function generateScriptsFile(map: Map<string, string>) {
   map.forEach((value, key) => {
@@ -87,21 +88,17 @@ const processFile = async (filename: string) => {
 
 const debouncedProcessFile = debounce(processFile, 300);
 
-const watcher = chokidar.watch(staticsDev, {
-  ignored: /(^|[\/\\])\../, // ignore dotfiles
-  persistent: true,
-  ignoreInitial: true,
-});
+if (yonxConfig.codegen.jsmodule.enabled) {
+  const watcher = chokidar.watch(staticsDev, {
+    ignored: /(^|[\/\\])\../, // ignore dotfiles
+    persistent: true,
+    ignoreInitial: true,
+  });
 
-watcher
-  .on("add", (path) => debouncedProcessFile(path))
-  .on("change", (path) => debouncedProcessFile(path))
-  .on("unlink", (path) => console.log(`File ${path} has been removed`));
-
-// Graceful shutdown
-// process.on("SIGINT", () => {
-//   watcher.close().then(() => {
-//     console.log("File watcher closed");
-//     process.exit(0);
-//   });
-// });
+  watcher
+    .on("add", (path) => debouncedProcessFile(path))
+    .on("change", (path) => debouncedProcessFile(path))
+    .on("unlink", (path) => console.log(`File ${path} has been removed`));
+} else {
+  console.log("Client codegen disabled");
+}
