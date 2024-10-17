@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bunx concurrently 'bun devStart' 'bun devCodeGen' 'bun devSocket'",
+    "dev": "bunx concurrently --names 'Dev,CodeGen,DevSocket' --prefix-colors 'cyan,magenta,yellow' 'bun devStart' 'bun devCodeGen' 'bun devSocket'",
     "devStart": "bun run --hot src/index.tsx",
     "devCodeGen": "bun run --hot src/yonx/codegen.ts",
     "devSocket": "bun run src/yonx/socket.ts",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/alpinejs": "^3.13.10",
     "@types/bun": "latest",
+    "chokidar": "^4.0.1",
     "concurrently": "^9.0.1",
     "drizzle-kit": "^0.25.0"
   }

@@ -4,23 +4,10 @@ import { inspectRoutes } from "hono/dev";
 import { watch } from "fs";
 import { HonoApp } from "@/HonoApp";
 import MainApp from "@/index";
-
-const debounce = (fn: Function, ms = 1000) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
-};
-
-const debouncedReload = debounce((ws: ServerWebSocket) => {
-  console.log("yolol");
-  ws.send(JSON.stringify({ reload: true }));
-}, 500);
+import { debounce } from "./utils";
+import chokidar from "chokidar";
 
 const app = new HonoApp().app;
-
-let watcher: any;
 
 const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>();
 
@@ -32,21 +19,24 @@ const wsDev = app.get(
     return {
       onOpen(evt, ws) {
         ws.send(JSON.stringify({ routes }));
-        watcher = watch("src", { recursive: true }, async (event, filename) => {
-          if (
-            filename &&
-            !filename.includes("yonx") &&
-            !filename.endsWith(".js")
-          ) {
-            // ws.send(JSON.stringify({ reload: true }));
-            // const debouncedReload = debounce(() => {
-            //   console.log("yolol");
-            //   ws.send(JSON.stringify({ reload: true }));
-            // }, 1500);
-
-            debouncedReload(ws);
-          }
+        const watcherReloadUser = chokidar.watch(`src`, {
+          ignored: /(^|[\/\\])\../, // ignore dotfiles
+          persistent: true,
+          ignoreInitial: true,
         });
+        const debouncedReload = debounce((ws: ServerWebSocket) => {
+          ws.send(JSON.stringify({ reload: true }));
+        }, 500);
+        watcherReloadUser
+          .on("add", (path) => {
+            debouncedReload(ws);
+          })
+          .on("change", (path) => {
+            debouncedReload(ws);
+          })
+          .on("unlink", (path) => {
+            debouncedReload(ws);
+          });
       },
       onMessage: (event, ws) => {
         // console.log(ws, event);
@@ -55,16 +45,16 @@ const wsDev = app.get(
   })
 );
 
-process.on("SIGINT", () => {
-  // close watcher if it is defined
-  if (watcher) {
-    console.log("Closing watcher...");
-    watcher.close();
-  } else {
-    console.log("No watcher to close.");
-  }
-  process.exit(0);
-});
+// process.on("SIGINT", () => {
+//   // close watcher if it is defined
+//   if (watcher) {
+//     console.log("Closing watcher...");
+//     watcher.close();
+//   } else {
+//     console.log("No watcher to close.");
+//   }
+//   process.exit(0);
+// });
 
 export default {
   port: 7777,
