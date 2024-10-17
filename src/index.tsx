@@ -19,9 +19,12 @@ app.route("/", api);
 // pages -> client/pages/*
 app.route("/", pages);
 
-Hono.addMiddleware("/welcome", {
-  authAdapters: ["some-test-string"],
-});
+Hono.addMultipleMiddleware("/welcome", [
+  {
+    authAdapters: ["some-test-string"],
+    simpleCacheAdapters: [100000],
+  },
+]);
 
 app.get("/welcome", async (c) => {
   return await c.html(

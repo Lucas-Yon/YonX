@@ -10,6 +10,7 @@ import { contextStorage } from "hono/context-storage";
 import { every, except } from "hono/combine";
 import { validateRequest, SessionValidationResult } from "./server/auth/auth";
 import { requestId } from "hono/request-id";
+import { StatusCode } from "hono/utils/http-status";
 
 export type Env = {
   Variables: {
@@ -20,10 +21,18 @@ export type Env = {
   };
   Bindings: undefined;
 };
+type CacheEntry = {
+  body: string;
+  headers: Headers;
+  status: number;
+  expiry: number;
+};
+
+const cache = new Map<string, CacheEntry>();
+let globalEnabled = false;
 
 export class HonoApp {
   public app: Hono<Env>;
-  private globalEnabled: boolean = false;
 
   constructor() {
     this.app = new Hono<Env>({});
@@ -36,7 +45,7 @@ export class HonoApp {
    * This function throw an error if already called.
    */
   public addGlobalMiddleware() {
-    if (this.globalEnabled) {
+    if (globalEnabled) {
       throw new Error("Global middleware already enabled");
     }
     // Logger middleware
@@ -60,7 +69,7 @@ export class HonoApp {
       })
     );
 
-    this.globalEnabled = true;
+    globalEnabled = true;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -82,6 +91,37 @@ export class HonoApp {
       }
       c.set("session", session);
       await next();
+    });
+  }
+
+  public simpleCacheAdapters(ttl: number = 60000) {
+    return createMiddleware<Env>(async (c, next) => {
+      const key = c.req.url;
+      const cachedResponse = cache.get(key);
+      console.log(key);
+
+      if (cachedResponse && cachedResponse.expiry > Date.now()) {
+        c.header("X-Cache", "HIT");
+        cachedResponse.headers.forEach((value, name) => {
+          c.header(name, value);
+        });
+        c.status(cachedResponse.status as StatusCode);
+        return c.body(cachedResponse.body);
+      }
+
+      await next();
+
+      const responseBody = await c.res.clone().text();
+      const responseHeaders = new Headers(c.res.headers);
+
+      cache.set(key, {
+        body: responseBody,
+        headers: responseHeaders,
+        status: c.res.status,
+        expiry: Date.now() + ttl,
+      });
+
+      c.header("X-Cache", "MISS");
     });
   }
 
@@ -123,20 +163,19 @@ export class HonoApp {
     }[],
     exclude?: string | string[]
   ) {
-    const middlewares = configs.map((config) => {
-      const [methodName, args] = Object.entries(config)[0] as [
-        MiddlewareNames<HonoApp>,
-        any[]
-      ];
+    console.log(configs, path);
+
+    let middlewares: any = [];
+    for (const [key, value] of Object.entries(configs[0])) {
+      const methodName = key as MiddlewareNames<HonoApp>;
       const method = this[methodName] as (
         ...args: any[]
       ) => ReturnType<HonoApp[MiddlewareNames<HonoApp>]>;
-      return method(...args);
-    });
-    // @ts-ignore
+      middlewares.push(method(...value));
+    }
+
     if (exclude) return this.app.use(path, except(exclude, ...middlewares));
 
-    // @ts-ignore
     return this.app.use(path, every(...middlewares));
   }
 

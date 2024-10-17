@@ -63,7 +63,7 @@ const app = new HonoApp().app.get("/register", async (c) => {
               href="/login"
               className="font-semibold ml-2 leading-6 text-primary hover:text-accent"
             >
-              Login
+              Register
             </a>
           </p>
         </div>

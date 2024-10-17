@@ -5,9 +5,6 @@ import { sql } from "drizzle-orm";
 export const users = createTable("user", {
   id: text().primaryKey().unique(),
   email: text().notNull(),
-  hashedPassword: text(),
-  email_verified: integer({ mode: "boolean" }).default(false),
-  email_valid: integer().default(0),
   created_at: text().default(sql`(current_timestamp)`),
   name: text(),
 });

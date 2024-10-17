@@ -3,7 +3,17 @@ import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/components/ui/text_input";
 import { Script } from "@/scripts";
 
-const app = new HonoApp().app.get("/login", async (c) => {
+const Hono = new HonoApp();
+// Hono.addMultipleMiddleware("/api/users/*", [
+//   {
+//     authAdapters: [""],
+//     simpleCacheAdapters: [100000],
+//   },
+// ]);
+
+const app = Hono.app.get("/login", async (c) => {
+  await Bun.sleep(1000);
+  // console.log("here oo ");
   return await c.html(
     <FrontLayout>
       <Script>

@@ -3,11 +3,13 @@ import { HonoApp } from "@/HonoApp";
 const Hono = new HonoApp();
 
 Hono.addMiddleware("/get", {
-  authAdapters: ["some-test-string"],
+  // authAdapters: ["some-test-string"],
+  simpleCacheAdapters: [100000],
 });
 
 const userRoutes = Hono.app
   .get("/get", async (c) => {
+    console.log("getting");
     return c.json({
       user: c.var.env.TEST,
     });

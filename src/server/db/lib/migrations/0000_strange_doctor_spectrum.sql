@@ -28,9 +28,6 @@ CREATE TABLE `yonx_session` (
 CREATE TABLE `yonx_user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`email` text NOT NULL,
-	`hashedPassword` text,
-	`email_verified` integer DEFAULT false,
-	`email_valid` integer DEFAULT 0,
 	`created_at` text DEFAULT (current_timestamp),
 	`name` text
 );
