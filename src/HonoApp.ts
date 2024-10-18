@@ -8,9 +8,12 @@ import { csrf } from "hono/csrf";
 import { cors } from "hono/cors";
 import { contextStorage } from "hono/context-storage";
 import { every, except } from "hono/combine";
-import { validateRequest, SessionValidationResult } from "./server/auth/auth";
+import {
+  validateRequest,
+  type SessionValidationResult,
+} from "./server/auth/auth";
 import { requestId } from "hono/request-id";
-import { StatusCode } from "hono/utils/http-status";
+import type { StatusCode } from "hono/utils/http-status";
 
 export type Env = {
   Variables: {
@@ -62,6 +65,9 @@ export class HonoApp {
     this.app.use(
       createMiddleware<Env>(async (c, next) => {
         // await Bun.sleep(1000); // Simulate some async setup
+
+        // get theme from query if exist wtf ?
+        c.set("theme", c.req.query("theme"));
         // c.env = env;
         c.set("db", db);
         c.set("getSession", validateRequest);

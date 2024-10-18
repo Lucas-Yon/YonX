@@ -1,7 +1,7 @@
-import { FC } from "hono/jsx";
+import type { FC } from "hono/jsx";
 import { html, raw } from "hono/html";
 import { getContext } from "hono/context-storage";
-import { Env } from "@/HonoApp";
+import type { Env } from "@/HonoApp";
 import { ExistingScripts } from "@/scripts";
 
 interface ScriptProps {

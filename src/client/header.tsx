@@ -1,14 +1,14 @@
 import { type PropsWithChildren } from "hono/jsx";
-import { css, Style } from "hono/css";
 import { createGenerator } from "@unocss/core";
 import { customTheme } from "./css/unocss";
 import { getContext } from "hono/context-storage";
-import { Env } from "@/HonoApp";
-import { Script, Scripts } from "@/scripts";
+import type { Env } from "@/HonoApp";
+import { Scripts } from "@/scripts";
+import { Styles, Style } from "@/styles";
 
 const Header = async (props: PropsWithChildren) => {
   const c = getContext<Env>();
-  const cssconfig = await customTheme(c.var.theme ?? "basic");
+  const cssconfig = await customTheme();
   const generatedCss = await createGenerator(cssconfig).generate(
     `${props.children}`
   );
@@ -16,9 +16,10 @@ const Header = async (props: PropsWithChildren) => {
   return (
     <html>
       <head>
-        <link rel="stylesheet" href="/static/reset.css" />
+        <Style dist="reset" />
+        <Styles />
         <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} />
-        <Style>{css`
+        <Style>{`
           [x-cloak] {
             display: none !important;
           }

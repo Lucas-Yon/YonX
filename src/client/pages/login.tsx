@@ -1,20 +1,21 @@
 import FrontLayout from "@/client/layout/front_layout";
 import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/components/ui/text_input";
-import { Script } from "@/scripts";
+import { Style } from "@/styles";
+// import { Script } from "@/scripts";
 
 const Hono = new HonoApp();
-// Hono.addMultipleMiddleware("/api/users/*", [
+// Hono.addMultipleMiddleware("/login", [
 //   {
-//     authAdapters: [""],
+//     // authAdapters: [""],
 //     simpleCacheAdapters: [100000],
 //   },
 // ]);
 
 const app = Hono.app.get("/login", async (c) => {
-  c.set("theme", c.req.query("theme"));
   return await c.html(
     <FrontLayout>
+      <Style dist="theme/white" />
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-foreground">

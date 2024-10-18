@@ -1,22 +1,22 @@
 import { config } from "unocss.config";
-import { themes } from "./themes";
+// import { themes } from "./themes";
 import { defineConfig } from "unocss";
 
-export const customTheme = async (theme: keyof typeof themes | string) => {
+export const customTheme = async () => {
   return defineConfig({
     layers: config.layers,
     presets: config.presets,
     theme: config.theme,
     preflights: [
-      {
-        // Add your custom preflight styles
-        layer: "base",
-        getCSS: () =>
-          theme === "random"
-            ? themes.random()
-            : /* @ts-ignore */
-              themes[theme in themes ? theme : "basic"],
-      },
+      // {
+      //   // Add your custom preflight styles
+      //   layer: "base",
+      //   getCSS: () =>
+      //     theme === "random"
+      //       ? themes.random()
+      //       : /* @ts-ignore */
+      //         themes[theme in themes ? theme : "basic"],
+      // },
       {
         layer: "base",
         getCSS: () => `

@@ -1,6 +1,3 @@
-import { inspectRoutes } from "hono/dev";
-import { HonoApp } from "@/HonoApp";
-import { html } from "hono/html";
 import { Script } from "@/scripts";
 
 function ToolsRoutes() {

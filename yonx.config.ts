@@ -10,8 +10,13 @@ const yonxConfig = {
       pagesPath: "src/client/pages",
     },
     devsocket: {
-      enabled: false,
+      enabled: true,
       port: 7777,
+    },
+    cssmodule: {
+      enabled: true,
+      devPath: "src/client/css",
+      distPath: "src/statics/dist",
     },
   },
 };

@@ -15,12 +15,16 @@ var yonxConfig = {
       pagesPath: "src/client/pages"
     },
     devsocket: {
-      enabled: false,
+      enabled: true,
       port: 7777
+    },
+    cssmodule: {
+      enabled: true,
+      devPath: "src/client/css",
+      distPath: "src/statics/dist"
     }
   }
 };
-var socket = yonxConfig.codegen.devsocket;
 var yonx_config_default = yonxConfig;
 
 // src/client/module/dev.ts
