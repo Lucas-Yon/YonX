@@ -1,3 +1,5 @@
+import { dictionaries } from "@/yonx/dictionaries";
+
 const yonxConfig = {
   codegen: {
     jsmodule: {
@@ -18,6 +20,11 @@ const yonxConfig = {
       devPath: "src/client/css",
       distPath: "src/statics/dist",
     },
+  },
+  i18n: {
+    enabled: true,
+    skipValidation: ["/api", "/static"],
+    dictionariesCodegen: true,
   },
 };
 

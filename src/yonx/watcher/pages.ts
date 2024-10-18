@@ -39,7 +39,9 @@ ${pages
   .map((page) => `import ${page.importName} from ".${page.path}/${page.name}";`)
   .join("\n")}
 
-const app = new HonoApp().app;
+const app = new HonoApp().app${
+      yonxConfig.i18n.enabled ? '.basePath(":lang/")' : ""
+    };
 
 ${pages
   .map(

@@ -12,8 +12,11 @@ import {
   validateRequest,
   type SessionValidationResult,
 } from "./server/auth/auth";
+import { getLocale, getDictionary } from "./yonx/i18n";
 import { requestId } from "hono/request-id";
 import type { StatusCode } from "hono/utils/http-status";
+import { i18n } from "@/i18n/i18n.config";
+import yonxConfig from "yonx.config";
 
 export type Env = {
   Variables: {
@@ -21,6 +24,11 @@ export type Env = {
     session?: SessionValidationResult;
     getSession: typeof validateRequest;
     env: typeof env;
+    i18n?: {
+      languages: typeof i18n.locales;
+      userLanguage: (typeof i18n.locales)[number];
+      getDictionary: typeof getDictionary;
+    };
     theme?: string;
   };
   Bindings: undefined;
@@ -60,7 +68,9 @@ export class HonoApp {
     // Context middleware to generate scripts ect...
     this.app.use(contextStorage());
     this.app.use("*", requestId());
-
+    if (yonxConfig.i18n.enabled === true) {
+      this.app.use("*", this.i18nAdapters());
+    }
     // Database and environment setup middleware (db,redis,env,etc...)
     this.app.use(
       createMiddleware<Env>(async (c, next) => {
@@ -89,6 +99,33 @@ export class HonoApp {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  public i18nAdapters() {
+    return createMiddleware<Env>(async (c, next) => {
+      if (
+        c.req.method === "GET" &&
+        !yonxConfig.i18n.skipValidation.some((word) =>
+          c.req.path.startsWith(word)
+        )
+      ) {
+        const lang = c.req.path.split("/")[1] as (typeof i18n.locales)[number];
+        if (i18n.locales.includes(lang)) {
+          c.set("i18n", {
+            languages: i18n.locales,
+            userLanguage: lang,
+            getDictionary: getDictionary,
+          });
+        } else {
+          const newLang = getLocale(c.req.raw);
+          return c.redirect(
+            `/${newLang}${c.req.url.replace(/^https?:\/\/[^\/]+/, "")}`
+          );
+        }
+      }
+
+      await next();
+    });
+  }
 
   public authAdapters(test: string) {
     return createMiddleware<Env>(async (c, next) => {

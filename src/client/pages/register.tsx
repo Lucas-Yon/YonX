@@ -23,11 +23,11 @@ const app = new HonoApp().app.get("/register", async (c) => {
             method="get"
           >
             <div>
-              <EmailInput />
+              <EmailInput label="Email" autoComplete="" placeholder="" />
             </div>
 
             <div>
-              <PasswordInput />
+              <PasswordInput label="Password" autoComplete="" placeholder="" />
             </div>
 
             <div className="mt-6">

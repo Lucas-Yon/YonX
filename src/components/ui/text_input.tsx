@@ -1,11 +1,15 @@
-export function PasswordInput() {
+export function PasswordInput(props: {
+  label: string;
+  placeholder: string;
+  autoComplete: string;
+}) {
   return (
     <div className="flex w-full  flex-col gap-1 text-foreground">
       <label
         htmlFor="passwordInput"
         className="w-fit pl-0.5 text-foreground text-sm"
       >
-        Password
+        {props.label}
       </label>
       <div x-data="{ showPassword: false }" className="relative">
         <input
@@ -13,8 +17,8 @@ export function PasswordInput() {
           id="passwordInput"
           className="w-full rounded-md bg-background px-2 py-2 text-sm text-foreground focus-visible:outline focus-visible:outline-2  focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-75"
           name="password"
-          autoComplete="current-password"
-          placeholder="Enter your password"
+          autoComplete={props.autoComplete}
+          placeholder={props.placeholder}
         />
         <button
           type="button"
@@ -65,14 +69,18 @@ export function PasswordInput() {
   );
 }
 
-export function EmailInput() {
+export function EmailInput(props: {
+  label: string;
+  placeholder: string;
+  autoComplete: string;
+}) {
   return (
     <div className="flex w-full flex-col gap-1 text-foreground">
       <label
         htmlFor="emailInput"
         className="w-fit pl-0.5 text-foreground text-sm"
       >
-        Email
+        {props.label}
       </label>
       <div className="relative">
         <input
@@ -81,8 +89,8 @@ export function EmailInput() {
           x-model="email"
           className="w-full rounded-md bg-background px-2 py-2 text-sm text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-75"
           name="email"
-          autoComplete="email"
-          placeholder="Enter your email"
+          autoComplete={props.autoComplete}
+          placeholder={props.placeholder}
         />
       </div>
     </div>

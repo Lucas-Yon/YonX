@@ -1,0 +1,15 @@
+{
+  "h2": "Sign in to your account",
+  "sign_in": "Sign in",
+  "username": "Username",
+  "password": "Password",
+  "invalid_email_address": "Invalid Email Address",
+  "invalid_details": "The email address you entered is invalid. Please try again.",
+  "not_a_member": "Not a member?",
+  "email": "Email",
+  "register": "Register",
+  "password_placeholder": "Enter your password",
+  "password_autocomplete": "current-password",
+  "email_placeholder": "Enter your email",
+  "email_autocomplete": "email"
+}

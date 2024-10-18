@@ -13,6 +13,7 @@
     "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.5",
     "@hono/zod-validator": "^0.4.1",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
@@ -21,12 +22,14 @@
     "arctic": "^1.9.2",
     "drizzle-orm": "^0.34.1",
     "hono": "^4.6.4",
+    "negotiator": "^0.6.3",
     "unocss": "^0.63.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/alpinejs": "^3.13.10",
     "@types/bun": "latest",
+    "@types/negotiator": "^0.6.3",
     "chokidar": "^4.0.1",
     "concurrently": "^9.0.1",
     "drizzle-kit": "^0.25.0"

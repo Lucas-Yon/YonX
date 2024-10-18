@@ -1,0 +1,15 @@
+{
+  "h2": "Conecte-se à sua conta",
+  "sign_in": "Entrar",
+  "username": "Nome de usuário",
+  "password": "Senha",
+  "invalid_email_address": "Endereço de e-mail inválido",
+  "invalid_details": "O endereço de e-mail que você inseriu é inválido. Por favor, tente novamente.",
+  "not_a_member": "Ainda não é membro?",
+  "email": "E-mail",
+  "register": "Cadastrar-se",
+  "password_placeholder": "Digite sua senha",
+  "password_autocomplete": "current-password",
+  "email_placeholder": "Digite seu e-mail",
+  "email_autocomplete": "email"
+}
