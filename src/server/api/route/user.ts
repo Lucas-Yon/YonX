@@ -2,15 +2,17 @@ import { HonoApp } from "@/HonoApp";
 
 const Hono = new HonoApp();
 
-Hono.addMiddleware("/get", {
-  // authAdapters: ["some-test-string"],
-  simpleCacheAdapters: [100000],
-});
+Hono.addMultipleMiddleware("/*", [
+  {
+    // authAdapters: ["some-test-string"],
+    simpleCacheAdapters: [3000],
+  },
+]);
 
 const userRoutes = Hono.app
   .get("/get", async (c) => {
     return c.json({
-      user: c.var.env.TEST,
+      user: Math.random(),
     });
   })
   .get("/update", async (c) => {

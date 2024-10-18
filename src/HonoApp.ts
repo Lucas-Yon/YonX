@@ -105,6 +105,7 @@ export class HonoApp {
     return createMiddleware<Env>(async (c, next) => {
       const key = c.req.url;
       const cachedResponse = simpleCacheStore.get(key);
+      // console.table(simpleCacheStore);
 
       if (cachedResponse && cachedResponse.expiry > Date.now()) {
         c.header("X-Cache", "HIT");

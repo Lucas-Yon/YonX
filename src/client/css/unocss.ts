@@ -1,6 +1,7 @@
 import { config } from "unocss.config";
 // import { themes } from "./themes";
 import { defineConfig } from "unocss";
+// import generateLayerBase from "@/yonx/generateTheme";
 
 export const customTheme = async () => {
   return defineConfig({
@@ -11,11 +12,7 @@ export const customTheme = async () => {
       // {
       //   // Add your custom preflight styles
       //   layer: "base",
-      //   getCSS: () =>
-      //     theme === "random"
-      //       ? themes.random()
-      //       : /* @ts-ignore */
-      //         themes[theme in themes ? theme : "basic"],
+      //   getCSS: () => generateLayerBase(),
       // },
       {
         layer: "base",

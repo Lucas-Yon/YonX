@@ -5,9 +5,12 @@ import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
 import { Scripts } from "@/scripts";
 import { Styles, Style } from "@/styles";
+import { Style as HonoStyle, css } from "hono/css";
 
 const Header = async (props: PropsWithChildren) => {
   const c = getContext<Env>();
+  // const theme = c.get("theme") || "theme/white";
+  // console.log(theme);
   const cssconfig = await customTheme();
   const generatedCss = await createGenerator(cssconfig).generate(
     `${props.children}`
@@ -17,15 +20,16 @@ const Header = async (props: PropsWithChildren) => {
     <html>
       <head>
         <Style dist="reset" />
+        <Style dist="theme/basic" />
+
         <Styles />
         <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} />
-        <Style>{`
+        <HonoStyle>{css`
           [x-cloak] {
             display: none !important;
           }
-        `}</Style>
+        `}</HonoStyle>
         <Scripts />
-
         <script
           defer
           src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"
