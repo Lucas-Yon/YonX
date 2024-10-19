@@ -57,3 +57,5 @@ document.addEventListener("alpine:init", () => {
   Alpine.store("dev", DevStore);
   DevStore.init();
 });
+
+console.log("yo");

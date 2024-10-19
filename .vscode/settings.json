@@ -1,8 +1,8 @@
-{
-  "files.exclude": {
-    "**/yonx/**": true
-  },
-  "search.exclude": {
-    "**/yonx/**": true
-  }
-}
+// {
+//   "files.exclude": {
+//     "**/yonx/**": true
+//   },
+//   "search.exclude": {
+//     "**/yonx/**": true
+//   }
+// }

@@ -1,5 +1,5 @@
 import { type PropsWithChildren } from "hono/jsx";
-import { createGenerator } from "@unocss/core";
+// import { createGenerator } from "@unocss/core";
 import { customTheme } from "./css/unocss";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
@@ -9,22 +9,27 @@ import { Style as HonoStyle, css } from "hono/css";
 
 const Header = async (props: PropsWithChildren) => {
   const c = getContext<Env>();
+
+  const i18n = c.var.i18n;
   // const theme = c.get("theme") || "theme/white";
   // console.log(theme);
-  const cssconfig = await customTheme();
-  const generatedCss = await createGenerator(cssconfig).generate(
-    `${props.children}`
-  );
+  // const cssconfig = await customTheme();
+  // const generatedCss = await createGenerator(cssconfig).generate(
+  //   `${props.children}`
+  // );
 
   return (
-    <html>
+    <html lang={i18n?.userLanguage ?? "en"}>
       <head>
         <Style dist="reset" />
         <Style dist="theme/basic" />
         <Script dist="worker/main" />
         <Script dist="utils/link" />
+        {/* <Script dist="dev" /> */}
+
+        <Style dist="unocss" />
         <Styles />
-        <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} />
+        {/* <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} /> */}
         <HonoStyle>{css`
           [x-cloak] {
             display: none !important;

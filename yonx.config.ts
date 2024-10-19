@@ -1,5 +1,3 @@
-import { dictionaries } from "@/yonx/dictionaries";
-
 const yonxConfig = {
   codegen: {
     jsmodule: {

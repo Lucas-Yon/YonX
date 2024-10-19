@@ -35,8 +35,9 @@ app.get("/welcome", async (c) => {
 // When writing client side file in /statics/dev with a .ts extension
 // bun will automatically compile and write the corresponding .js file in /statics/dist
 // so that we can serve it statically with the following route
-app.get(
-  "/static/js/*",
+app.on(
+  "GET",
+  ["/static/js/*", "/static/css/*"],
   serveStatic({
     root: "./",
     onFound: (_path, c) => {

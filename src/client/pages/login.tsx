@@ -1,6 +1,6 @@
 import FrontLayout from "@/client/layout/front_layout";
 import { HonoApp } from "@/HonoApp";
-import { EmailInput, PasswordInput } from "@/components/ui/text_input";
+import { EmailInput, PasswordInput } from "@/client/components/ui/text_input";
 
 const Hono = new HonoApp();
 Hono.app.get("/login", async (c) => {
@@ -73,13 +73,14 @@ Hono.app.get("/login", async (c) => {
 
           <p className="mt-10 text-center text-sm text-muted-foreground">
             {i18.not_a_member}
-            <a
-              href="#"
+            {/* <a href="/register"> {i18.register}</a> */}
+            <buton
               id="navButton"
-              className="font-semibold ml-2 leading-6 text-primary hover:text-accent"
+              data-nav="/register"
+              className="link font-semibold ml-2 leading-6 text-primary hover:text-accent"
             >
               {i18.register}
-            </a>
+            </buton>
           </p>
         </div>
       </div>

@@ -57,6 +57,7 @@ export const createScriptManager = (): ScriptManager => {
   };
 
   const Scripts: FC = () => {
+    console.log(Scripts);
     const currentSet = contextManager("get");
     if (!currentSet || currentSet === "cleared") return null;
 

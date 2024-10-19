@@ -1,6 +1,6 @@
 import { readdir, unlink } from "node:fs/promises";
 import chokidar from "chokidar";
-import { debounce } from "../utils";
+import { debounce, getHash } from "../utils";
 import yonxConfig from "yonx.config";
 
 const staticsDev = yonxConfig.codegen.cssmodule.devPath;
@@ -22,13 +22,28 @@ function generateStylesFile(map: Map<string, string>) {
   Bun.write("./src/styles.ts", fileContent);
 }
 
-const processFile = async () => {
+async function generateFileChangedOrNot(path: string) {
+  const fileUpdatedContent = await Bun.file(path).text();
+
+  const hash = getHash(fileUpdatedContent);
+  const name = path.replace(`${staticsDev}/`, "").replace(".css", "");
+
+  const hashedName = `${name}-${hash}.css`;
+  const output = `${staticsDist}/css/${hashedName}`;
+  const file = Bun.file(output);
+  return await file.exists();
+}
+
+const processFile = async (path: string) => {
   try {
+    const check = await generateFileChangedOrNot(path);
+    if (check) return;
+    // check if file already exists
+
     const files = await readdir(staticsDev, {
       recursive: true,
       withFileTypes: true,
     });
-    const hasher = new Bun.CryptoHasher("md5");
 
     const cssFiles = files
       .filter((file) => file.name.endsWith(".css"))
@@ -41,8 +56,7 @@ const processFile = async () => {
     for (const cssFile of cssFiles) {
       const file = Bun.file(cssFile.path);
       const text = await file.text();
-      hasher.update(text);
-      const hash = hasher.digest().toString("hex").slice(0, 8);
+      const hash = getHash(text);
       const name = cssFile.path
         .replace(`${staticsDev}/`, "")
         .replace(".css", "");
@@ -83,10 +97,10 @@ if (yonxConfig.codegen.cssmodule.enabled) {
   });
 
   watcher
-    .on("add", () => debouncedProcessFile())
-    .on("change", () => debouncedProcessFile())
-    .on("unlink", () => debouncedProcessFile())
-    .on("unlinkDir", () => debouncedProcessFile());
+    .on("add", (p) => debouncedProcessFile(p))
+    .on("change", (p) => debouncedProcessFile(p))
+    .on("unlink", (p) => debouncedProcessFile(p))
+    .on("unlinkDir", (p) => debouncedProcessFile(p));
 } else {
   console.log("Client CSS codegen disabled");
 }

@@ -71,6 +71,14 @@ export const config = {
       sm: "calc(var(--radius) - 4px)",
     },
   },
+  cli: {
+    entry: [
+      {
+        outFile: "src/client/css/unocss.css",
+        patterns: ["src/client/**/*.{ts,tsx,jsx,js}"],
+      },
+    ],
+  },
 };
 
 export default defineConfig(config);

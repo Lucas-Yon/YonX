@@ -1,10 +1,12 @@
 import FrontLayout from "@/client/layout/front_layout";
 import { HonoApp } from "@/HonoApp";
-import { EmailInput, PasswordInput } from "@/components/ui/text_input";
+import { EmailInput, PasswordInput } from "@/client/components/ui/text_input";
+import { Script } from "@/scripts";
 
 const app = new HonoApp().app.get("/register", async (c) => {
   return await c.html(
     <FrontLayout>
+      <Script>{`console.log(25)`}</Script>
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-foreground">
@@ -59,12 +61,13 @@ const app = new HonoApp().app.get("/register", async (c) => {
 
           <p className="mt-10 text-center text-sm text-muted-foreground">
             Not a member?
-            <a
-              href="/login"
-              className="font-semibold ml-2 leading-6 text-primary hover:text-accent"
+            <buton
+              id="navButton"
+              data-nav="/login"
+              className="link font-semibold ml-2 leading-6 text-primary hover:text-accent"
             >
-              Register
-            </a>
+              login
+            </buton>
           </p>
         </div>
       </div>
