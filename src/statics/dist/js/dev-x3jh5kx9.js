@@ -23,6 +23,11 @@ var yonxConfig = {
       devPath: "src/client/css",
       distPath: "src/statics/dist"
     }
+  },
+  i18n: {
+    enabled: true,
+    skipValidation: ["/api", "/static"],
+    dictionariesCodegen: true
   }
 };
 var yonx_config_default = yonxConfig;

@@ -85,7 +85,8 @@ if (yonxConfig.codegen.cssmodule.enabled) {
   watcher
     .on("add", () => debouncedProcessFile())
     .on("change", () => debouncedProcessFile())
-    .on("unlink", () => debouncedProcessFile());
+    .on("unlink", () => debouncedProcessFile())
+    .on("unlinkDir", () => debouncedProcessFile());
 } else {
   console.log("Client CSS codegen disabled");
 }

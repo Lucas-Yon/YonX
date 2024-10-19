@@ -6,6 +6,12 @@ export const dictionaries = {
         (module) => module.default
       ),
   },
+  jp: {
+        "auth/login": () =>
+      import("@/i18n/dictionaries/auth/login/jp.json").then(
+        (module) => module.default
+      ),
+  },
   en: {
         "auth/login": () =>
       import("@/i18n/dictionaries/auth/login/en.json").then(

@@ -98,7 +98,8 @@ if (yonxConfig.codegen.jsmodule.enabled) {
   watcher
     .on("add", (path) => debouncedProcessFile(path))
     .on("change", (path) => debouncedProcessFile(path))
-    .on("unlink", (path) => console.log(`File ${path} has been removed`));
+    .on("unlink", (path) => debouncedProcessFile(path))
+    .on("unlinkDir", (path) => debouncedProcessFile(path));
 } else {
   console.log("Client codegen disabled");
 }

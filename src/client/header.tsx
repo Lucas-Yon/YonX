@@ -3,7 +3,7 @@ import { createGenerator } from "@unocss/core";
 import { customTheme } from "./css/unocss";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
-import { Scripts } from "@/scripts";
+import { Script, Scripts } from "@/scripts";
 import { Styles, Style } from "@/styles";
 import { Style as HonoStyle, css } from "hono/css";
 
@@ -21,7 +21,8 @@ const Header = async (props: PropsWithChildren) => {
       <head>
         <Style dist="reset" />
         <Style dist="theme/basic" />
-
+        <Script dist="worker/main" />
+        <Script dist="utils/link" />
         <Styles />
         <style dangerouslySetInnerHTML={{ __html: generatedCss.css }} />
         <HonoStyle>{css`

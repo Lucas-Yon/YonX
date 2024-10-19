@@ -81,7 +81,8 @@ if (yonxConfig.codegen.pages.enabled) {
     .on("unlink", (path) => {
       console.log(`File ${path} has been removed`);
       debouncedProcessPages(path);
-    });
+    })
+    .on("unlinkDir", (path) => debouncedProcessPages(path));
 } else {
   console.log("Page codegen disabled");
 }

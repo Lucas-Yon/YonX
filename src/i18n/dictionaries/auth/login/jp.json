@@ -1,0 +1,15 @@
+{
+  "h2": "アカウントにログイン",
+  "sign_in": "ログイン",
+  "username": "ユーザー名",
+  "password": "パスワード",
+  "invalid_email_address": "無効なメールアドレス",
+  "invalid_details": "入力されたメールアドレスは無効です。再度お試しください。",
+  "not_a_member": "まだ会員ではありませんか？",
+  "email": "メール",
+  "register": "登録する",
+  "password_placeholder": "パスワードを入力してください",
+  "password_autocomplete": "current-password",
+  "email_placeholder": "メールアドレスを入力してください",
+  "email_autocomplete": "email"
+}
