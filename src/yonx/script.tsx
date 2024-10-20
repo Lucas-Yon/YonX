@@ -3,6 +3,8 @@ import { html, raw } from "hono/html";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
 import { ExistingScripts } from "@/scripts";
+import { waitForContextChange } from "./utils";
+import type { HtmlEscapedString } from "hono/utils/html";
 
 interface ScriptProps {
   children?: string;
@@ -20,7 +22,7 @@ interface ScriptData {
 
 interface ScriptManager {
   Script: FC<ScriptProps>;
-  Scripts: FC;
+  Scripts: () => Promise<HtmlEscapedString>;
 }
 
 export const createScriptManager = (): ScriptManager => {
@@ -37,6 +39,7 @@ export const createScriptManager = (): ScriptManager => {
     }
     if (action === "add" && data) {
       const currentSet = c.get("scripts") || new Set<string>();
+      console.log(currentSet);
       if (currentSet === "cleared") return;
       c.set("scripts", currentSet.add(JSON.stringify(data)));
     }
@@ -56,10 +59,10 @@ export const createScriptManager = (): ScriptManager => {
     return null;
   };
 
-  const Scripts: FC = () => {
-    console.log(Scripts);
+  const Scripts = async () => {
     const currentSet = contextManager("get");
-    if (!currentSet || currentSet === "cleared") return null;
+    if (!currentSet || currentSet === "cleared") return <></>;
+    await waitForContextChange("hack", true, 5);
 
     const result = html`${Array.from(currentSet).map((scriptString) => {
       const script = JSON.parse(scriptString) as ScriptData;
@@ -83,6 +86,5 @@ export const createScriptManager = (): ScriptManager => {
     contextManager("clear");
     return result;
   };
-
   return { Script, Scripts };
 };

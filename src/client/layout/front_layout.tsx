@@ -8,7 +8,7 @@ const FrontLayout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
       <html class="dark bg-background h-full font-montserrat">
         <body class={"h-full"}>{props.children}</body>
       </html>
-      {/* <DevBar /> */}
+      <DevBar />
     </Header>
   );
 };

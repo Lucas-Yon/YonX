@@ -1,9 +1,11 @@
 import type { FC } from "hono/jsx";
-import { html, raw } from "hono/html";
+import { html } from "hono/html";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
 import { ExistingStyles } from "@/styles";
 import { Style as HonoStyle } from "hono/css";
+import { waitForContextChange } from "./utils";
+import type { HtmlEscapedString } from "hono/utils/html";
 
 interface StyleProps {
   children?: string;
@@ -21,7 +23,7 @@ interface StyleData {
 
 interface StyleManager {
   Style: FC<StyleProps>;
-  Styles: FC;
+  Styles: () => Promise<HtmlEscapedString>;
 }
 
 export const createStyleManager = (): StyleManager => {
@@ -57,9 +59,10 @@ export const createStyleManager = (): StyleManager => {
     return null;
   };
 
-  const Styles: FC = () => {
+  const Styles = async () => {
     const currentSet = contextManager("get");
-    if (!currentSet || currentSet === "cleared") return null;
+    if (!currentSet || currentSet === "cleared") return <></>;
+    await waitForContextChange("hack", true, 5);
 
     const result = html`${Array.from(currentSet).map((styleString) => {
       const style = JSON.parse(styleString) as StyleData;
@@ -76,15 +79,14 @@ export const createStyleManager = (): StyleManager => {
           href="${ExistingStyles[style.dist]}"
           rel="stylesheet"
         />`;
+      } else {
+        // TODO : Content style not working at all for some reason
+        return (
+          <style
+            dangerouslySetInnerHTML={{ __html: style.content ?? "" }}
+          ></style>
+        );
       }
-      // TODO : Content style not working at all for some reason
-      //   else {
-      //     console.log("yo");
-      //     if (!style.content) return null;
-      //     return (
-      //       <style dangerouslySetInnerHTML={{ __html: style.content }}></style>
-      //     );
-      //   }
     })}`;
     contextManager("clear");
     return result;

@@ -1,31 +1,29 @@
 import { type PropsWithChildren } from "hono/jsx";
 // import { createGenerator } from "@unocss/core";
-import { customTheme } from "./css/unocss";
+// import { customTheme } from "./css/unocss";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
 import { Script, Scripts } from "@/scripts";
 import { Styles, Style } from "@/styles";
 import { Style as HonoStyle, css } from "hono/css";
+import { Hack } from "@/yonx/hack";
 
 const Header = async (props: PropsWithChildren) => {
   const c = getContext<Env>();
 
-  const i18n = c.var.i18n;
   // const theme = c.get("theme") || "theme/white";
-  // console.log(theme);
   // const cssconfig = await customTheme();
   // const generatedCss = await createGenerator(cssconfig).generate(
   //   `${props.children}`
   // );
 
   return (
-    <html lang={i18n?.userLanguage ?? "en"}>
+    <html lang={c.var.i18n?.userLanguage ?? "en"}>
       <head>
         <Style dist="reset" />
         <Style dist="theme/basic" />
         <Script dist="worker/main" />
         <Script dist="utils/link" />
-        {/* <Script dist="dev" /> */}
 
         <Style dist="unocss" />
         <Styles />
@@ -52,8 +50,10 @@ const Header = async (props: PropsWithChildren) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-
       <body>{props.children}</body>
+
+      {/* DO NOT REMOVE  */}
+      <Hack />
     </html>
   );
 };
