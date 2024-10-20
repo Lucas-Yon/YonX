@@ -68,5 +68,3 @@ setInterval(() => {
   count++;
   console.log("test: " + count);
 }, 1000);
-
-console.log("je suis un joueur std sans cerveau");

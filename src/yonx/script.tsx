@@ -39,7 +39,6 @@ export const createScriptManager = (): ScriptManager => {
     }
     if (action === "add" && data) {
       const currentSet = c.get("scripts") || new Set<string>();
-      console.log(currentSet);
       if (currentSet === "cleared") return;
       c.set("scripts", currentSet.add(JSON.stringify(data)));
     }
