@@ -22,6 +22,7 @@
     "@unocss/core": "^0.63.4",
     "arctic": "^1.9.2",
     "drizzle-orm": "^0.34.1",
+    "eventemitter3": "^5.0.1",
     "hono": "^4.6.4",
     "negotiator": "^0.6.3",
     "unocss": "^0.63.4",

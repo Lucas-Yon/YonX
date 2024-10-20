@@ -3,7 +3,7 @@ import { html } from "hono/html";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
 import { ExistingStyles } from "@/styles";
-import { waitForContextChange } from "./utils";
+import { waitForValueChange } from "./utils";
 import type { HtmlEscapedString } from "hono/utils/html";
 
 interface StyleProps {
@@ -61,7 +61,7 @@ export const createStyleManager = (): StyleManager => {
   const Styles = async () => {
     const currentSet = contextManager("get");
     if (!currentSet || currentSet === "cleared") return <></>;
-    await waitForContextChange("hack", true, 5);
+    await waitForValueChange();
 
     const result = html`${Array.from(currentSet).map((styleString) => {
       const style = JSON.parse(styleString) as StyleData;
