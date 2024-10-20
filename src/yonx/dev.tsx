@@ -1,4 +1,5 @@
 import { Script } from "@/scripts";
+import { Style } from "@/styles";
 
 function ToolsRoutes() {
   return (

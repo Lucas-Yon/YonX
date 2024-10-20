@@ -14,7 +14,7 @@ Hono.app.get("/login", async (c) => {
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-foreground">
-            {i18.h2} ttt
+            {i18.h2}
           </h2>
         </div>
 
@@ -73,7 +73,6 @@ Hono.app.get("/login", async (c) => {
 
           <p className="mt-10 text-center text-sm text-muted-foreground">
             {i18.not_a_member}
-            {/* <a href="/register"> {i18.register}</a> */}
             <buton
               id="navButton"
               data-nav="/register"

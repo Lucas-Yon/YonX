@@ -3,7 +3,6 @@ import { html } from "hono/html";
 import { getContext } from "hono/context-storage";
 import type { Env } from "@/HonoApp";
 import { ExistingStyles } from "@/styles";
-import { Style as HonoStyle } from "hono/css";
 import { waitForContextChange } from "./utils";
 import type { HtmlEscapedString } from "hono/utils/html";
 
@@ -66,7 +65,6 @@ export const createStyleManager = (): StyleManager => {
 
     const result = html`${Array.from(currentSet).map((styleString) => {
       const style = JSON.parse(styleString) as StyleData;
-      //   console.log(style);
       if (style.href) {
         return html`<link
           id="${style.id || ""}"
@@ -80,11 +78,8 @@ export const createStyleManager = (): StyleManager => {
           rel="stylesheet"
         />`;
       } else {
-        // TODO : Content style not working at all for some reason
         return (
-          <style
-            dangerouslySetInnerHTML={{ __html: style.content ?? "" }}
-          ></style>
+          <style dangerouslySetInnerHTML={{ __html: style.content ?? "" }} />
         );
       }
     })}`;
