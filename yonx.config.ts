@@ -21,7 +21,7 @@ const yonxConfig = {
   },
   i18n: {
     enabled: true,
-    skipValidation: ["/api", "/static"],
+    skipValidation: ["/api", "/static", "/images"],
     dictionariesCodegen: true,
   },
 };

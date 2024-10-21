@@ -1,0 +1,21 @@
+version: "3"
+services:
+  app:
+    build:
+      context: ../.. # Use the parent directory for building the Docker image
+      dockerfile: ./docker/dev/dockerfile
+    volumes:
+      - ../../src:/usr/src/app/src # Bind mount the source code for live updates
+      - ../../package.json:/usr/src/app/package.json # Sync package.json
+      - ../../bun.lockb:/usr/src/app/bun.lockb # Sync bun.lockb file
+      - ../../sqlite.db:/usr/src/app/sqlite.db # Bind mount the SQLite database
+      - ../../unocss.config.ts:/usr/src/app/unocss.config.ts # Bind mount the UnoCSS config
+      - ../../yonx.config.ts:/usr/src/app/yonx.config.ts # Bind mount the Yonx config
+      - ../../tsconfig.json:/usr/src/app/tsconfig.json # Bind mount the TypeScript config
+      - ../../.env:/usr/src/app/.env # Bind mount the environment variables
+      - /usr/src/app/node_modules # Exclude node_modules from bind mount
+    working_dir: /usr/src/app
+    command: bun run bun concurrently --names 'Socket,Dev' --prefix-colors 'yellow,blue' 'bun devSocket' 'bun devStart' # Use bun's development mode
+    ports:
+      - "3000:3000"
+    restart: always

@@ -8,12 +8,17 @@
     "devStart": "bun run --hot src/index.tsx",
     "devCodeGen": "bun run --hot src/yonx/codegen.ts",
     "devSocket": "bun run src/yonx/socket.ts",
+    "devContainer": "docker compose -f ./docker/dev/docker-compose.yml  up ",
+    "dockerDev": "bunx concurrently --names 'DevContainer,CodeGen,Unocss' --prefix-colors 'cyan,magenta,blue' 'bun devContainer' 'bun devCodeGen' 'bun unocss'",
     "db:migrate": "bun src/server/db/migrate.ts",
     "db:generate": "bunx drizzle-kit generate",
     "unocss": "bunx unocss -w -m",
     "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx",
     "build": "bun build  --minify-whitespace --minify-syntax --target bun --outdir ./out ./src/index.tsx"
   },
+  "trustedDependencies": [
+    "sharp"
+  ],
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.5",
     "@hono/zod-validator": "^0.4.1",
@@ -26,6 +31,7 @@
     "eventemitter3": "^5.0.1",
     "hono": "^4.6.4",
     "negotiator": "^0.6.3",
+    "sharp": "^0.33.5",
     "unocss": "^0.63.4",
     "zod": "^3.23.8"
   },

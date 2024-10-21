@@ -1,0 +1,41 @@
+
+
+RESIZE IMAGE + ROTATE with Sharp:
+app.get(
+  "/static/*",
+  serveStatic({
+    root: "./",
+    onFound: async (_path, c) => {
+      try {
+        if (!_path.includes("images")) return;
+        const { w, h, rotate, quality } = c.req.query();
+        console.log(w, h);
+        if (!w || !h) return;
+        const file = await Bun.file(_path);
+        const arrayBuffer = await file.arrayBuffer();
+        const image = Sharp(arrayBuffer);
+        image.resize({ height: parseInt(h), width: parseInt(w) });
+        if (rotate) {
+          image.rotate(parseInt(rotate), {
+            background: { r: 0, g: 0, b: 0, alpha: 0 },
+          });
+        }
+        const processedBuffer = await image
+          .webp({ quality: parseInt(quality) ?? 90 })
+          .toBuffer();
+        c.res = new Response(processedBuffer, {
+          status: 200,
+          statusText: "OK",
+          headers: {
+            "Content-Type": "image/webp",
+            "Content-Length": `${processedBuffer.byteLength}`,
+          },
+        });
+      } catch (err) {
+        console.error("Error processing image:", err);
+      }
+    },
+    rewriteRequestPath: (path) =>
+      path.replace(/^\/static/, "./src/statics/dist"),
+  })
+);
