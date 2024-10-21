@@ -2,6 +2,7 @@ import { HonoApp } from "./HonoApp";
 import { serveStatic } from "hono/bun";
 import api from "@/server/api/root";
 import pages from "@/client/pages/root";
+import App from "@/client/header";
 
 const Hono = new HonoApp();
 
@@ -11,6 +12,8 @@ Hono.addGlobalMiddleware();
 const app = Hono.app;
 
 // api -> api/route/action
+app.route("/", App);
+
 app.route("/", api);
 
 // pages -> client/pages/*

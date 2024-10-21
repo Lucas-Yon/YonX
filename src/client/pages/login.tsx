@@ -3,13 +3,19 @@ import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/client/components/ui/text_input";
 
 const Hono = new HonoApp();
+// Hono.addMultipleMiddleware("/login", [
+//   {
+//     simpleCacheAdapters: [100000],
+//   },
+// ]);
+
 Hono.app.get("/login", async (c) => {
   const i18n = c.var.i18n;
   if (!i18n) {
     return c.redirect("/404");
   }
   const i18 = await i18n.getDictionary(i18n.userLanguage, "auth/login");
-  return await c.html(
+  return await c.render(
     <FrontLayout>
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">

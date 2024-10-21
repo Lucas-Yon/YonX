@@ -10,6 +10,7 @@ interface StyleProps {
   children?: string;
   id?: string;
   href?: string;
+  preload?: boolean;
   dist?: keyof typeof ExistingStyles;
 }
 
@@ -18,6 +19,7 @@ interface StyleData {
   id?: string;
   href?: string;
   dist?: keyof typeof ExistingStyles;
+  preload?: boolean;
 }
 
 interface StyleManager {
@@ -47,14 +49,8 @@ export const createStyleManager = (): StyleManager => {
     }
   };
 
-  const Style: FC<StyleProps> = ({ children, id, href, dist }) => {
-    const styleData: StyleData = {};
-    if (children) styleData.content = children;
-    if (id) styleData.id = id;
-    if (href) styleData.href = href;
-    if (dist) styleData.dist = dist;
-
-    contextManager("add", styleData);
+  const Style: FC<StyleProps> = (props) => {
+    contextManager("add", props);
     return null;
   };
 
@@ -65,18 +61,18 @@ export const createStyleManager = (): StyleManager => {
 
     const result = html`${Array.from(currentSet).map((styleString) => {
       const style = JSON.parse(styleString) as StyleData;
-      if (style.href) {
-        return html`<link
-          id="${style.id || ""}"
-          href="${style.href}"
-          rel="stylesheet"
-        />`;
-      } else if (style.dist) {
-        return html`<link
-          id="${style.id || ""}"
-          href="${ExistingStyles[style.dist]}"
-          rel="stylesheet"
-        />`;
+      if (style.href || style.dist) {
+        const link = style.dist
+          ? ExistingStyles[style.dist]
+          : (style.href as string);
+        return html`
+          <link
+            ${style.id || style.dist ? `id=css/${style.id || style.dist}` : ""}
+            href="${link}"
+            rel="stylesheet"
+          />
+          ${style.preload ? <link rel="preload" as="style" href={link} /> : ""}
+        `;
       } else {
         return (
           <style dangerouslySetInnerHTML={{ __html: style.content ?? "" }} />

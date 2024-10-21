@@ -11,7 +11,8 @@
     "db:migrate": "bun src/server/db/migrate.ts",
     "db:generate": "bunx drizzle-kit generate",
     "unocss": "bunx unocss -w -m",
-    "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx"
+    "compile": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.tsx",
+    "build": "bun build  --minify-whitespace --minify-syntax --target bun --outdir ./out ./src/index.tsx"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.5",

@@ -47,14 +47,8 @@ export const createScriptManager = (): ScriptManager => {
     }
   };
 
-  const Script: FC<ScriptProps> = ({ children, id, src, dist }) => {
-    const scriptData: ScriptData = {};
-    if (children) scriptData.content = children;
-    if (id) scriptData.id = id;
-    if (src) scriptData.src = src;
-    if (dist) scriptData.dist = dist;
-
-    contextManager("add", scriptData);
+  const Script: FC<ScriptProps> = (props) => {
+    contextManager("add", props);
     return null;
   };
 

@@ -4,7 +4,7 @@ import { EmailInput, PasswordInput } from "@/client/components/ui/text_input";
 import { Script } from "@/scripts";
 
 const app = new HonoApp().app.get("/register", async (c) => {
-  return await c.html(
+  return await c.render(
     <FrontLayout>
       <Script>{`console.log(25)`}</Script>
       <div className="flex h-full min-h-full flex-col justify-center px-6 py-12 lg:px-8">
