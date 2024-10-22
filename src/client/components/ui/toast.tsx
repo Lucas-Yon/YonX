@@ -22,14 +22,21 @@ export type ToastProps = {
 };
 
 type ToastVariants = {
-  type: Record<string, { class: string; Icon?: Icons; iconClass?: string }>;
+  type: Record<
+    Exclude<ToastProps["type"], undefined>,
+    { class: string; Icon?: Icons; iconClass?: string }
+  >;
   position: Record<string, string>;
 };
 
 const toastVariants: ToastVariants = {
   type: {
     default: { class: "bg-background text-foreground" },
-    success: { class: "bg-background text-green-500", Icon: CheckCircle },
+    success: {
+      class: "bg-background text-foreground",
+      iconClass: "fill-green-500 text-white size-6",
+      Icon: CheckCircle,
+    },
     info: { class: "bg-background text-blue-500", Icon: InformationCircle },
     warning: {
       class: "bg-background text-orange-400",
@@ -47,14 +54,30 @@ const toastVariants: ToastVariants = {
   },
 };
 
-const toastTypes = Object.keys(toastVariants.type);
+const toastTypes = Object.keys(toastVariants.type) as Exclude<
+  ToastProps["type"],
+  undefined
+>[];
+
+export function toast({
+  title,
+  description,
+  type,
+  position,
+  html,
+}: ToastProps) {
+  // @ts-expect-error
+  if (!window.toast) return;
+  // @ts-expect-error
+  window.toast(title, { description, type, position, html });
+}
 
 export function Notification() {
   return (
     <div class="relative w-auto h-auto" x-data>
       <div
-        x-data="{ 
-            title: 'Default Toast Notification', 
+        x-data="{
+            title: 'Default Toast Notification',
             description: '',
             type: 'default',
             position: 'top-center',
@@ -68,18 +91,6 @@ export function Notification() {
             }
         }"
         x-init="
-            window.toast = function(message, options = {}){
-                let description = '';
-                let type = 'default';
-                let position = 'top-center';
-                let html = '';
-                if(typeof options.description != 'undefined') description = options.description;
-                if(typeof options.type != 'undefined') type = options.type;
-                if(typeof options.position != 'undefined') position = options.position;
-                if(typeof options.html != 'undefined') html = options.html;
-                
-                window.dispatchEvent(new CustomEvent('toast-show', { detail : { type: type, message: message, description: description, position : position, html: html }}));
-            }
 
             window.customToastHTML = `
                 <div class='relative flex items-start justify-center p-4'>
@@ -229,9 +240,26 @@ export function Notification() {
   );
 }
 
-export function Toast() {
+export function Toaster() {
   return (
-    <div x-data>
+    <div
+      x-data
+      x-init="
+          if(window.toast) throw new Error('toast already declared somewhere')
+          window.toast = function(message, options = {}){
+                let description = '';
+                let type = 'default';
+                let position = 'top-center';
+                let html = '';
+                if(typeof options.description != 'undefined') description = options.description;
+                if(typeof options.type != 'undefined') type = options.type;
+                if(typeof options.position != 'undefined') position = options.position;
+                if(typeof options.html != 'undefined') html = options.html;
+                
+                window.dispatchEvent(new CustomEvent('toast-show', { detail : { type: type, message: message, description: description, position : position, html: html }}));
+            }
+          "
+    >
       <template x-teleport="body">
         <ul
           x-data="{ 
@@ -584,7 +612,7 @@ export function Toast() {
                 class="relative flex flex-col items-start shadow-[0_5px_15px_-3px_rgb(0_0_0_/_0.08)] w-full transition-all duration-300 ease-out  border  sm:rounded-md sm:max-w-xs group"
                 x-bind:class={`{'p-4' : !toast.html, 'p-0' : toast.html, ${toastTypes
                   .map(
-                    (variant: keyof typeof toastVariants.type) =>
+                    (variant) =>
                       ` '${toastVariants.type[variant].class}' : toast.type=='${variant}'`
                   )
                   .join(", ")}}`}
@@ -598,14 +626,17 @@ export function Toast() {
                           if (!Icon) return undefined;
                           return (
                             <Icon
-                              className="size-[18px] mr-1.5 -ml-1 "
+                              className={cn(
+                                "size-[18px] mr-1.5 -ml-1 ",
+                                toastVariants.type[variant].iconClass || ""
+                              )}
                               x-show={`toast.type=='${variant}'`}
                             />
                           );
                         }
                       )}
                       <p
-                        class="text-[13px] font-medium leading-none text-gray-800"
+                        class="text-[13px] font-medium leading-none "
                         x-text="toast.message"
                       ></p>
                     </div>
