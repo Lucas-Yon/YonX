@@ -18,4 +18,5 @@ services:
     command: bun run concurrently --names 'Socket,Dev,Codegen' 'bun devSocket' 'bun devStart' 'bun devCodeGen' # Use bun's development mode
     ports:
       - "3000:3000"
+      - "7777:7777"
     restart: always

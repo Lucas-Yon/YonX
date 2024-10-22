@@ -1,11 +1,18 @@
 import { HonoApp } from "@/HonoApp";
 import { Tab, Tabs, TabsContent, TabsList } from "../components/ui/tab";
+import { Toast, Notification } from "../components/ui/toast";
+import { ArchiveBox } from "@/components/Icons";
+import ToolsRoutes from "@/yonx/dev";
 
 const Hono = new HonoApp();
 
 const Page = Hono.app.get("/component", async (c) => {
   return await c.render(
-    <div class={""}>
+    <div>
+      <ToolsRoutes />
+      <ArchiveBox className="text-blue-600 size-18 " />
+      <Notification />
+      <Toast />
       <Tabs defaultTab={1} className="w-full max-w-sm">
         <TabsList className="grid-cols-3">
           <Tab index={1}>Account</Tab>

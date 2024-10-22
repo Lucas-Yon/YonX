@@ -48,8 +48,3 @@
     console.log("Navigated back/forward in history");
   });
 })();
-var count = 0;
-setInterval(() => {
-  count++;
-  console.log("test: " + count);
-}, 1000);

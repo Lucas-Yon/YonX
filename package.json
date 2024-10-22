@@ -30,6 +30,7 @@
     "drizzle-orm": "^0.34.1",
     "eventemitter3": "^5.0.1",
     "hono": "^4.6.4",
+    "lucide": "^0.453.0",
     "negotiator": "^0.6.3",
     "sharp": "^0.33.5",
     "tailwind-merge": "^2.5.4",

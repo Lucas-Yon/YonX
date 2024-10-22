@@ -62,8 +62,8 @@
   });
 })();
 
-let count = 0;
-setInterval(() => {
-  count++;
-  console.log("test: " + count);
-}, 1000);
+// let count = 0;
+// setInterval(() => {
+//   count++;
+//   console.log("test: " + count);
+// }, 1000);

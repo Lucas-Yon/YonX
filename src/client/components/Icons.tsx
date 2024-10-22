@@ -1,12 +1,16 @@
 import type { Child } from "hono/jsx";
+import type { JSX } from "hono/jsx/jsx-runtime";
 
 export interface IconProps {
   size?: string;
   color?: string;
   className?: string;
+  fill?: string;
   strokeWidth?: number;
   viewBox?: string;
 }
+
+export type Icons = (props: IconProps) => JSX.Element;
 
 /**
  * A base component for rendering SVG icons.
@@ -20,22 +24,25 @@ export interface IconProps {
 export const IconBase = ({
   size = "24",
   color = "currentColor",
+  fill = "none",
   className = "",
   strokeWidth = 2,
   viewBox = "0 0 24 24",
   children,
+  ...props
 }: IconProps & { children: Child }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      fill="none"
+      fill={fill}
       viewBox={viewBox}
       stroke={color}
       strokeWidth={strokeWidth}
       class={className}
       aria-hidden="true"
+      {...props}
     >
       {children}
     </svg>
