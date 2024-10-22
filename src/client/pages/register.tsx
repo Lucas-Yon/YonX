@@ -3,7 +3,9 @@ import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/client/components/ui/text_input";
 import { Script } from "@/scripts";
 
-const Page = new HonoApp().app.get("/register", async (c) => {
+const Hono = new HonoApp();
+
+const Page = Hono.app.get("/register", async (c) => {
   return await c.render(
     <FrontLayout>
       <Script>{`console.log(25)`}</Script>

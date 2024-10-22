@@ -33,8 +33,7 @@
       element.addEventListener("click", async (event) => {
         event.preventDefault();
         const newPageUrl = element.getAttribute("data-nav") ?? "/";
-        const lang = document.documentElement.lang;
-        await managePageChange(`/${lang}${newPageUrl}`);
+        await managePageChange(newPageUrl);
       });
     });
   }

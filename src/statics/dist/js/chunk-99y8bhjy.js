@@ -56,24 +56,6 @@ var serialize = (name, value, opt) => {
 };
 
 // node_modules/hono/dist/client/utils.js
-function isObject(item) {
-  return typeof item === "object" && item !== null && !Array.isArray(item);
-}
-function deepMerge(target, source) {
-  if (!isObject(target) && !isObject(source)) {
-    return source;
-  }
-  const merged = { ...target };
-  for (const key in source) {
-    const value = source[key];
-    if (isObject(merged[key]) && isObject(value)) {
-      merged[key] = deepMerge(merged[key], value);
-    } else {
-      merged[key] = value;
-    }
-  }
-  return merged;
-}
 var mergePath = (base, path) => {
   base = base.replace(/\/+$/, "");
   base = base + "/";
@@ -101,6 +83,24 @@ var removeIndexString = (urlSting) => {
   }
   return urlSting.replace(/\/index$/, "");
 };
+function isObject(item) {
+  return typeof item === "object" && item !== null && !Array.isArray(item);
+}
+function deepMerge(target, source) {
+  if (!isObject(target) && !isObject(source)) {
+    return source;
+  }
+  const merged = { ...target };
+  for (const key in source) {
+    const value = source[key];
+    if (isObject(merged[key]) && isObject(value)) {
+      merged[key] = deepMerge(merged[key], value);
+    } else {
+      merged[key] = value;
+    }
+  }
+  return merged;
+}
 
 // node_modules/hono/dist/client/client.js
 var createProxy = (callback, path) => {

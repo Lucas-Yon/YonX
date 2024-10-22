@@ -69,6 +69,7 @@ export class HonoApp {
     this.app.use(contextStorage());
     this.app.use("*", requestId());
     if (yonxConfig.i18n.enabled === true) {
+      console.log("yoo");
       this.app.use("*", this.i18nAdapters());
     }
     // Database and environment setup middleware (db,redis,env,etc...)

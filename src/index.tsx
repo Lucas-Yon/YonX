@@ -19,21 +19,21 @@ app.route("/", api);
 // pages -> client/pages/*
 app.route("/", pages);
 
-Hono.addMultipleMiddleware("/welcome", [
-  {
-    authAdapters: ["some-test-string"],
-    simpleCacheAdapters: [100000],
-  },
-]);
+// Hono.addMultipleMiddleware("/welcome", [
+//   {
+//     authAdapters: ["some-test-string"],
+//     simpleCacheAdapters: [100000],
+//   },
+// ]);
 
-app.get("/welcome", async (c) => {
-  return await c.html(
-    <div>
-      <h1>{`welcome ${c.var.session?.user?.email}`}</h1>
-      <a href="/api/auth/logout">Logout</a>
-    </div>
-  );
-});
+// app.get("/welcome", async (c) => {
+//   return await c.html(
+//     <div>
+//       <h1>{`welcome ${c.var.session?.user?.email}`}</h1>
+//       <a href="/api/auth/logout">Logout</a>
+//     </div>
+//   );
+// });
 
 // When writing client side file in /statics/dev with a .ts extension
 // bun will automatically compile and write the corresponding .js file in /statics/dist

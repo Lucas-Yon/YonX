@@ -1,11 +1,11 @@
 // src/client/module/worker/shared.ts
+var count = 0;
+var ports = [];
 function broadcastCount() {
   ports.forEach((port) => {
     port.postMessage(count);
   });
 }
-var count = 0;
-var ports = [];
 setInterval(() => {
   count++;
   console.log("Worker count: " + count);

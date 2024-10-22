@@ -1,6 +1,7 @@
 import FrontLayout from "@/client/layout/front_layout";
 import { HonoApp } from "@/HonoApp";
 import { EmailInput, PasswordInput } from "@/client/components/ui/text_input";
+import Link from "@/yonx/components/link";
 
 const Hono = new HonoApp();
 // Hono.addMultipleMiddleware("/login", [
@@ -77,15 +78,13 @@ const Page = Hono.app.get("/login", async (c) => {
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm text-muted-foreground">
+          <p class="mt-10 text-center text-sm text-muted-foreground">
             {i18.not_a_member}
-            <buton
-              id="navButton"
-              data-nav="/register"
-              className="link font-semibold ml-2 leading-6 text-primary hover:text-accent"
-            >
-              {i18.register}
-            </buton>
+            <Link href="/register">
+              <button class="font-semibold ml-2 leading-6 text-primary hover:text-accent">
+                {i18.register}
+              </button>
+            </Link>
           </p>
         </div>
       </div>

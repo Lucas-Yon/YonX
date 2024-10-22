@@ -1,6 +1,6 @@
 import {
   hc
-} from "./chunk-341nqc1c.js";
+} from "./chunk-99y8bhjy.js";
 
 // yonx.config.ts
 var yonxConfig = {
@@ -26,7 +26,7 @@ var yonxConfig = {
   },
   i18n: {
     enabled: true,
-    skipValidation: ["/api", "/static"],
+    skipValidation: ["/api", "/static", "/images"],
     dictionariesCodegen: true
   }
 };

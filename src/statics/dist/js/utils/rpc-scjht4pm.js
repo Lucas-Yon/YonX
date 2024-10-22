@@ -1,6 +1,6 @@
 import {
   hc
-} from "../chunk-341nqc1c.js";
+} from "../chunk-99y8bhjy.js";
 
 // src/client/module/utils/rpc.ts
 var client = hc(location.origin);

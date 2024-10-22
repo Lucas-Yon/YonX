@@ -94,7 +94,7 @@ if (yonxConfig.i18n.dictionariesCodegen) {
   const watcher = chokidar.watch(i18nPath, {
     ignored: /(^|[\/\\])\../, // ignore dotfiles
     persistent: true,
-    ignoreInitial: true,
+    // ignoreInitial: true,
   });
 
   watcher

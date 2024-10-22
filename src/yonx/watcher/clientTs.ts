@@ -92,7 +92,7 @@ if (yonxConfig.codegen.jsmodule.enabled) {
   const watcher = chokidar.watch(staticsDev, {
     ignored: /(^|[\/\\])\../, // ignore dotfiles
     persistent: true,
-    ignoreInitial: true,
+    // ignoreInitial: true,
   });
 
   watcher

@@ -1,7 +1,7 @@
 import {
   client
-} from "./utils/rpc-k0qpaqhb.js";
-import"./chunk-341nqc1c.js";
+} from "./utils/rpc-scjht4pm.js";
+import"./chunk-99y8bhjy.js";
 
 // src/client/module/store.ts
 class TextStoreImpl {

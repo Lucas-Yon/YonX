@@ -66,7 +66,7 @@ if (yonxConfig.codegen.pages.enabled) {
   const watcherPages = chokidar.watch(`${pagesDir}`, {
     ignored: /(^|[\/\\])\../, // ignore dotfiles
     persistent: true,
-    ignoreInitial: true,
+    // ignoreInitial: true,
   });
 
   watcherPages
