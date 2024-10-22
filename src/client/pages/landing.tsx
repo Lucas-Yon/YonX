@@ -1,9 +1,9 @@
 import { HonoApp } from "@/HonoApp";
 
-const app = new HonoApp().app;
+const Hono = new HonoApp();
 
-app.get("/landing", async (c) => {
+const Page = Hono.app.get("/landing/:test/yolo", async (c) => {
   return await c.render(<div>oo</div>);
 });
 
-export default app;
+export default Page;

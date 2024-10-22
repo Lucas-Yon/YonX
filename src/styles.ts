@@ -5,7 +5,7 @@
 
   export const ExistingStyles = {
    	"reset": "/static/css/reset-2d21bde7.css",
-	"unocss": "/static/css/unocss-cd89c570.css",
+	"unocss": "/static/css/unocss-2dafc04a.css",
 	"theme/basic": "/static/css/theme/basic-d41670eb.css",
 	"theme/white": "/static/css/theme/white-f65b1b92.css"
   };

@@ -9,7 +9,7 @@ const Hono = new HonoApp();
 //   },
 // ]);
 
-Hono.app.get("/login", async (c) => {
+const Page = Hono.app.get("/login", async (c) => {
   const i18n = c.var.i18n;
   if (!i18n) {
     return c.redirect("/404");
@@ -93,4 +93,4 @@ Hono.app.get("/login", async (c) => {
   );
 });
 
-export default Hono.app;
+export default Page;

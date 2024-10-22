@@ -42,13 +42,13 @@ ${pages
 const app = new HonoApp().app${
       yonxConfig.i18n.enabled ? '.basePath(":lang/")' : ""
     };
+export const Pages = app${pages
+      .map(
+        (page) =>
+          `.route("${page.path !== "" ? page.path : "/"}", ${page.importName})`
+      )
+      .join("\n")};
 
-${pages
-  .map(
-    (page) =>
-      `app.route("${page.path !== "" ? page.path : "/"}", ${page.importName});`
-  )
-  .join("\n")}
 
 export default app;
 `;
